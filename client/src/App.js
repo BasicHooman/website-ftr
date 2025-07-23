@@ -11,9 +11,11 @@ function App() {
     <div className="">
     <Router>
       <Routes>
-        <Route path="/" element={<Createart />}/>
-        <Route path="/articles" element={<HomePage />}/>
+         <Route path="/" element={<HomePage />}/>
+        <Route path="/create" element={<Createart />}/>
         <Route path="/articles/:id" element={<Article />}/>
+        <Route path="/login" element={<Article />}/>
+        <Route path="/donate" element={<Article />}/>
       </Routes>
     </Router>
     </div>

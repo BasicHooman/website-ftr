@@ -31,7 +31,7 @@ const HomePage = () => {
       <div className="text-center">
         <Headerandnav />
       </div>
-      <h2>All Artricles</h2>
+      <h2>Trending</h2>
       <div className="d-flex">
         {articles.map((article) => (
           <div
