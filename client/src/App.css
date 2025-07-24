@@ -25,6 +25,16 @@ body{
   vertical-align: middle;
 }
 
+.separatorlg {
+  display: inline-block;
+  width: 1px;
+  height: 10rem;          /* Adjust to match your button height */
+  margin: 0 0.25rem;     /* Spacing around the line */
+  background-color: #000000; /* Separator color */
+  vertical-align: middle;
+}
+
+
 .ProseMirror em {
   font-style: italic;
 }
@@ -41,13 +51,18 @@ body{
 }
 
 .flexlimit{
-  max-width: 400px;
+  max-width: 100px;
 }
 .articleitem{
-  all:initial
-
+  padding: 1rem 0rem 1rem 0rem;
+  all:initial;
 }
 
+.news{
+  border: 2px solid #000000;
+  border-left: none;
+  border-right: none;
+}
 
 .containerr {
   max-width: 800px;     /* Limits the maximum width */
@@ -111,6 +126,11 @@ body{
   background-color: #f5f1e9;
   border-bottom-left-radius: 2rem;
   border-bottom-right-radius: 2rem  ;
+}
+
+.articleimg{
+  width: "462.67";
+  height: "308.44";
 }
 
 .write{
@@ -202,9 +222,21 @@ body{
 }
 
 .left{
-  align-content: flex-start;
+  margin-top: 2rem;
+  margin-left: 3rem;
+  font-family: 'Newsreader', serif;
+}
+
+.left1{
+  margin-top: 2rem;
+  margin-left: 0rem;
+  font-family: 'Newsreader', serif;
 }
 
 .navbar-bottom-shadow {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.margin-top{
+  margin-top: 1rem;
 }

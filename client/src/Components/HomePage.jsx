@@ -31,32 +31,72 @@ const HomePage = () => {
       <div className="text-center">
         <Headerandnav />
       </div>
-      <h2>Trending</h2>
-      <div className="d-flex">
-        {articles.map((article) => (
-          <div
-            className="d-flex flex-wrap rounded-3 m-5"
-            style={{ border: "1px solid black" }}
-          >
-            <div
-              key={article.id}
-              className="articleitem p-2 "
-              onClick={() => {
-                nav(`/articles/${article.id}`);
-              }}
-            >
-              <div className="displaycont flexlimit">
-                <h3>{article.title}</h3>
-              </div>
-              <p className="displaycont" style={{ paddingBottom: "1.5rem" }}>
-                <b>Author:</b> {article.author}
-              </p>
-            </div>
-            <div>
-              <img src={article.displayimg} />
-            </div>
+
+      <div className="d-flex justify-content-center">
+        <div>
+          <div className="left1">
+            <h2 style={{fontSize:"2.5rem"}}>Trending</h2>
           </div>
-        ))}
+          <div className="d-flex flex-wrap mb-5" style={{width:"830px"}}>
+            {articles.map((article) => (
+              <div
+                className="d-flex flex-wrap mx-auto news margin-top mx-5"
+              >
+                <div
+                  key={article.id}
+                  className="articleitem p-2"
+                  onClick={() => {
+                    nav(`/articles/${article.id}`);
+                  }}
+                >
+                  <div className="displaycont flexlimit">
+                    <h3>{article.title}</h3>
+                  </div>
+                  <p className="displaycont" style={{ paddingBottom: "1.5rem",width:"350px" }}>
+                    <b>Author:</b> {article.author}
+                  </p>
+                </div>
+                <div className="my-3">
+                  <img src={article.displayimg}  width= "462.675" height="308.4375"/>
+                </div>
+              </div>
+            ))}
+        </div>
+          
+        </div>
+       
+        <div className="left">
+          <div className="">
+            <h2 style={{fontSize:"2.5rem"}}>Recent Uploads</h2>
+          </div>
+          <div className="d-flex flex-wrap mb-5" style={{width:"500px"}}>
+            {articles.map((article) => (
+              <div
+                className="d-flex flex-wrap mx-auto news margin-top mx-5"
+              >
+                <div
+                  key={article.id}
+                  className="articleitem p-2"
+                  onClick={() => {
+                    nav(`/articles/${article.id}`);
+                  }}
+                >
+                <div className="my-2">
+                  <img src={article.displayimg}  width= "462.675" height="308.4375"/>
+                </div>
+                  <div className="displaycont flexlimit">
+                    <h3>{article.title}</h3>
+                  </div>
+                  <p className="displaycont" style={{width:"350px" }}>
+                    <b>Author:</b> {article.author}
+                  </p>
+                </div>
+              </div>
+            ))}
+          
+          </div>
+        </div>
+
       </div>
     </>
   );

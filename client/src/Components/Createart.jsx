@@ -122,9 +122,9 @@ const Createart = () => {
      
       <div className="containerr cont" >
         <div className="text-start">
-          <label htmlFor="thumbnail-upload" className="thumbnail left">
+          <label htmlFor="thumbnail-upload" className="thumbnail ">
             <div className="d-flex justify-content-center align-items-center">
-              <div className="mx-1" style={{ paddingBottom: ".1rem" }}>
+              <div className="mx-1 " style={{ paddingBottom: ".1rem" }}>
                 <ImageIcon fontSize="small" />
               </div>
               <div className="mx-1">Upload Thumbnail</div>
