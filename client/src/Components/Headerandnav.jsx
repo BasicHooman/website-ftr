@@ -1,14 +1,39 @@
 import React from "react";
 import img from "../assets/Logo.png";
+import { Link } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Headerandnav = () => {
   return (
     <>
-      <div className="" style={{ backgroundColor: "#f5f1e9" }}>
+      <div className="d-flex justify-content-between">
+        <div className="battle">Search</div>
+        <div className="d-flex battle">
+          <div className="mx-2">
+            <Link to="/" className="btn clear">
+              {" "}
+              Home{" "}
+            </Link>
+          </div>
+          <div className="mx-2">
+            <Link to="/login" className="btn clear">
+              Login
+            </Link>
+          </div>
+          <div className="mx-2">
+            <Link to="/donate" className="btn clear">
+              Donate
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="my-2" style={{ backgroundColor: "#f5f1e9" }}>
         <img src={img} width="460" height="120" />
       </div>
-      <nav class="navbar navbar-expand-lg shadow-sm">
-        <div class="container-fluid">
+
+      <nav className="navbar navbar-expand-lg navbar-bottom-shadow">
+        <div class="container-fluid ">
           <button
             class="navbar-toggler"
             type="button"
@@ -21,7 +46,7 @@ const Headerandnav = () => {
             <span class="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="navbar collapse navbar-collapse " id="navbarNav">
             <ul class="navbar-nav mx-auto">
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="#">

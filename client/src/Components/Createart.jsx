@@ -116,12 +116,14 @@ const Createart = () => {
 
   return (
     <>
-      <div className="text-center">
-        <Headerandnav />
-      </div>
-      <div className="cont d-flex justify-content-center align-items-center">
-        <div className="text-center">
-          <label htmlFor="thumbnail-upload" className="thumbnail ">
+
+     <div className="text-center">
+       <Headerandnav />
+     </div>
+     
+      <div className="containerr cont" >
+        <div className="text-start">
+          <label htmlFor="thumbnail-upload" className="thumbnail left">
             <div className="d-flex justify-content-center align-items-center">
               <div className="mx-1" style={{ paddingBottom: ".1rem" }}>
                 <ImageIcon fontSize="small" />
