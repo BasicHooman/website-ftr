@@ -116,7 +116,9 @@ const Createart = () => {
 
   return (
     <>
-      <Headerandnav />
+      <div className="text-center">
+        <Headerandnav />
+      </div>
      
       <div className="containerr cont" >
         <div className="text-start">
