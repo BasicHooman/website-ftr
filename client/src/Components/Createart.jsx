@@ -116,9 +116,8 @@ const Createart = () => {
 
   return (
     <>
-      <div className="text-center">
-        <Headerandnav />
-      </div>
+      <Headerandnav />
+     
       <div className="containerr cont" >
         <div className="text-start">
           <label htmlFor="thumbnail-upload" className="thumbnail left">
