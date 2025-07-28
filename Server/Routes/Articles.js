@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { title, content, author, displayimg } = req.body;
+    const { title, content, author, displayimg, genre,summary } = req.body;
 
     // Validate required fields
     if (!title || !content || !author || !displayimg) {
@@ -37,6 +37,8 @@ router.post("/", async (req, res) => {
       content,
       author,
       displayimg,
+      genre,
+      summary,
     });
 
     res.status(201).json(newArticle); // 201 = Created

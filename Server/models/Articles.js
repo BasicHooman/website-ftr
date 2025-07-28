@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) =>{
             type: DataTypes.STRING,
             allowNull: false,
         },
+        genre:{
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        summary:{
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
     });
     return Articles;
 };
