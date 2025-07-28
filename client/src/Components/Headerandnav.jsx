@@ -74,6 +74,16 @@ const Headerandnav = () => {
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="/about">
+                  About Us
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/debug">
+                  Debug
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#">
                   Creative Corner
                 </a>

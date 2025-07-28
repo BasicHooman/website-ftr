@@ -24,7 +24,15 @@ const uploadRouter = require("./Routes/Uploads");
 app.use("/upload", uploadRouter);
 
 
-db.sequelize.sync().then(()=>{
+
+const debugRouter = require('./Routes/Debug');
+app.use('/debug', debugRouter);
+
+const officersRouter = require('./Routes/Officers');
+app.use('/officers', officersRouter);
+
+
+db.sequelize.sync({ force: true }).then(()=>{
     app.listen(3001,() => {
             console.log("Server running on port 3001");
         });
