@@ -1,0 +1,58 @@
+const express = require('express');
+const router = express.Router();
+const { OAuth2Client } = require('google-auth-library');
+const { Users } = require('../models'); // Assuming your user model is exported from here
+
+// It's highly recommended to store your client ID in an environment variable
+const GOOGLE_CLIENT_ID = '866336099144-5pe05uci71vl9inhjf1d6rcppi2dfqfo.apps.googleusercontent.com';
+
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+// POST /api/auth/google-login
+router.post('/google-login', async (req, res) => {
+  const { credential } = req.body;
+
+  if (!credential) {
+    return res.status(400).json({ message: 'Authentication token is missing.' });
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture } = payload;
+
+    // Check if user already exists in your database
+    let user = await Users.findOne({ where: { googleId } });
+
+    if (!user) {
+      // If user doesn't exist, create a new one
+      user = await Users.create({
+        googleId,
+        email,
+        username: name, // Or however you want to handle usernames
+        // You might want to add other fields like 'picture' to your model
+      });
+    }
+
+    // Here, you would typically create a session or issue a JWT for your application
+    // For now, we'll just send back the user information
+    res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+
+  } catch (error) {
+    console.error('Error verifying Google token:', error);
+    res.status(401).json({ message: 'Invalid authentication token.' });
+  }
+});
+
+module.exports = router;

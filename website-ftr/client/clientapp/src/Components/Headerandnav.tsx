@@ -1,0 +1,118 @@
+import React from "react";
+import img from "../assets/Logo.png";
+import { Link } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import { GoogleLogin } from '@react-oauth/google';
+import type { CredentialResponse } from '@react-oauth/google';
+
+const Headerandnav = () => {
+
+  const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {
+    const { credential } = credentialResponse;
+    try {
+      const res = await fetch('/api/auth/google-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ credential }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Login successful:', data.user);
+        // You can now update the UI, e.g., show user's name, hide login button, etc.
+      } else {
+        console.error('Backend login failed');
+      }
+    } catch (error) {
+      console.error('An error occurred during login:', error);
+    }
+  };
+
+  const handleLoginError = () => {
+    console.log('Login Failed');
+  };
+
+  return (
+    <>
+      <div className="d-flex justify-content-between">
+        <div className="battle">Search</div>
+        <div className="d-flex battle">
+          <div className="mx-2">
+            <Link to="/" className="btn clear">
+              {" "}
+              Home{" "}
+            </Link>
+          </div>
+          <div className="mx-2">
+            <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
+          </div>
+          <div className="mx-2">
+            <Link to="/donate" className="btn clear">
+              Donate
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="my-2" style={{ backgroundColor: "#f5f1e9" }}>
+        <img src={img} width="460" height="120" />
+      </div>
+
+      <nav className="navbar navbar-expand-lg navbar-bottom-shadow">
+        <div className="container-fluid ">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          <div className="navbar collapse navbar-collapse " id="navbarNav">
+            <ul className="navbar-nav mx-auto">
+              <li className="nav-item">
+                <a className="nav-link" aria-current="page" href="#">
+                  News and Feautures
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Opinion-and-editorial
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Resources and Education
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Action and Advocacy
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Global Voices
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Creative Corner
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </>
+  );
+};
+
+export default Headerandnav;
+
