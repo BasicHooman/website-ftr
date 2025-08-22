@@ -25,9 +25,19 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:category", async (req, res) => {
   const category = req.params.category;
-  const articles = await Articles.findAll({where: {genre: category}});
-  res.json(articles);
+  try {
+    const articles = await Articles.findAll({where: {genre: category}});
+    if (articles) {
+      res.json(articles);
+    } else {
+      res.status(404).json({ error: "No articles in this category" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "FAILURE!" });
+  }
 });
+
 
 router.post("/", async (req, res) => {
   try {
