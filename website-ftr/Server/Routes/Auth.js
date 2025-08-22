@@ -4,7 +4,7 @@ const { OAuth2Client } = require('google-auth-library');
 const { Users } = require('../models'); // Assuming your user model is exported from here
 
 // It's highly recommended to store your client ID in an environment variable
-const GOOGLE_CLIENT_ID = '866336099144-5pe05uci71vl9inhjf1d6rcppi2dfqfo.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '1006918822791-8u7l0v8mlkv5im9ogh0acefffhpmfila.apps.googleusercontent.com';
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 

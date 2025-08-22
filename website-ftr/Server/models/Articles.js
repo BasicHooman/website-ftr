@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) =>{
         },
         summary:{
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
     });
     return Articles;

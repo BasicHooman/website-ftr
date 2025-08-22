@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import img from "../assets/Logo.png";
 import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
@@ -6,11 +6,19 @@ import { GoogleLogin } from '@react-oauth/google';
 import type { CredentialResponse } from '@react-oauth/google';
 
 const Headerandnav = () => {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {
     const { credential } = credentialResponse;
     try {
-      const res = await fetch('/api/auth/google-login', {
+      const res = await fetch('http://localhost:3001/api/auth/google-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,7 +29,8 @@ const Headerandnav = () => {
       if (res.ok) {
         const data = await res.json();
         console.log('Login successful:', data.user);
-        // You can now update the UI, e.g., show user's name, hide login button, etc.
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setUser(data.user);
       } else {
         console.error('Backend login failed');
       }
@@ -32,6 +41,11 @@ const Headerandnav = () => {
 
   const handleLoginError = () => {
     console.log('Login Failed');
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
   };
 
   return (
@@ -46,7 +60,14 @@ const Headerandnav = () => {
             </Link>
           </div>
           <div className="mx-2">
-            <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
+            {user ? (
+              <div className="d-flex align-items-center">
+                <span className="mx-2">Welcome, {user.username.split(' ')[0]}</span>
+                <button onClick={handleLogout} className="btn btn-primary">Logout</button>
+              </div>
+            ) : (
+              <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
+            )}
           </div>
           <div className="mx-2">
             <Link to="/donate" className="btn clear">
@@ -82,9 +103,9 @@ const Headerandnav = () => {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/opinion">
                   Opinion-and-editorial
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">

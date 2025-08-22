@@ -23,6 +23,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/:category", async (req, res) => {
+  const category = req.params.category;
+  const articles = await Articles.findAll({where: {genre: category}});
+  res.json(articles);
+});
+
 router.post("/", async (req, res) => {
   try {
     const { title, content, author, displayimg, genre,summary } = req.body;
