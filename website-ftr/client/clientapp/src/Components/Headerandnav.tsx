@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import img from "../assets/Logo.png";
+import img from "../assets/big-ftr.png";
 import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import { GoogleLogin } from '@react-oauth/google';
@@ -55,8 +55,7 @@ const Headerandnav = () => {
         <div className="d-flex battle">
           <div className="mx-2">
             <Link to="/" className="btn clear">
-              {" "}
-              Home{" "}
+              <HomeIcon />
             </Link>
           </div>
           <div className="mx-2">
@@ -77,8 +76,8 @@ const Headerandnav = () => {
         </div>
       </div>
 
-      <div className="my-2" style={{ backgroundColor: "#f5f1e9" }}>
-        <img src={img} width="460" height="120" />
+      <div className="my-2 text-center" style={{ backgroundColor: "#f5f1e9" }}>
+        <img src={img} width="460" height="100" />
       </div>
 
       <nav className="navbar navbar-expand-lg navbar-bottom-shadow">
@@ -95,7 +94,7 @@ const Headerandnav = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className="navbar collapse navbar-collapse " id="navbarNav">
+          <div className="navbar navbar-collapse" id="navbarNav">
             <ul className="navbar-nav mx-auto">
               <li className="nav-item">
                 <a className="nav-link" aria-current="page" href="#">
