@@ -6,6 +6,7 @@ import DebugPage from './Components/DebugPage';
 import AboutUs from './Components/AboutUs';
 import HomePage from './Components/HomePage';
 import Layout from './Components/Layout';
+import { CategoryDisplay } from './Components/CategoryDisplay';
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="donate" element={<Article />} />
         <Route path="about" element={<AboutUs />} />
         <Route path="debug" element={<DebugPage />} />
+        <Route path="category/:categoryName" element={<CategoryDisplay />} />
       </Route>
     </Routes>
   );

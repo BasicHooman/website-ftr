@@ -52,12 +52,7 @@ const Headerandnav = () => {
     <>
       <div className="d-flex justify-content-between">
         <div className="battle">Search</div>
-        <div className="d-flex battle">
-          <div className="mx-2">
-            <Link to="/" className="btn clear">
-              <HomeIcon />
-            </Link>
-          </div>
+        <div className="d-flex battle">         
           <div className="mx-2">
             {user ? (
               <div className="d-flex align-items-center">
@@ -68,12 +63,19 @@ const Headerandnav = () => {
               <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
             )}
           </div>
+               
           <div className="mx-2">
             <Link to="/donate" className="btn clear">
               Donate
             </Link>
           </div>
-        </div>
+          <div className="mx-2">
+            <Link to="/" className="btn clear">
+              <HomeIcon />
+            </Link>
+          </div>     
+          </div>
+          
       </div>
 
       <div className="my-2 text-center" style={{ backgroundColor: "#f5f1e9" }}>
@@ -97,34 +99,34 @@ const Headerandnav = () => {
           <div className="navbar navbar-collapse" id="navbarNav">
             <ul className="navbar-nav mx-auto">
               <li className="nav-item">
-                <a className="nav-link" aria-current="page" href="#">
+                <Link className="nav-link" to="/category/news-and-features">
                   News and Feautures
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/opinion">
+                <Link className="nav-link" to="/category/opinion-and-editorial">
                   Opinion-and-editorial
                 </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/category/resources-and-education">
                   Resources and Education
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/category/action-and-advocacy">
                   Action and Advocacy
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/category/global-voices">
                   Global Voices
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/category/creative-corner">
                   Creative Corner
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

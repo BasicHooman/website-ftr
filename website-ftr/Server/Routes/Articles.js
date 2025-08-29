@@ -23,7 +23,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/:category", async (req, res) => {
+router.get("/category/:category", async (req, res) => {
   const category = req.params.category;
   const articles = await Articles.findAll({where: {genre: category}});
   res.json(articles);
