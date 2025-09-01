@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) =>{
             allowNull: false,
         },
         displayimg:{
-            type: DataTypes.STRING,
+            type: DataTypes.BLOB('medium'),
             allowNull: false,
         },
         genre:{

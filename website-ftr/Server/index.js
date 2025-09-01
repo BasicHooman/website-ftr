@@ -19,7 +19,7 @@ app.use("/uploads", express.static("uploads"));
 const db= require("./models")
 
 const artRouter=require('./Routes/Articles')
-app.use('/article',artRouter)
+app.use('/api/articles',artRouter)
 const uploadRouter = require("./Routes/Uploads");
 app.use("/upload", uploadRouter);
 

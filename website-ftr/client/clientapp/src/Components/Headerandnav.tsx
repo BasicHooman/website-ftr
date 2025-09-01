@@ -105,7 +105,7 @@ const Headerandnav = () => {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/category/opinion-and-editorial">
-                  Opinion-and-editorial
+                  Opinion and Editorial
                 </Link>
               </li>
               <li className="nav-item">
@@ -124,7 +124,7 @@ const Headerandnav = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/category/creative-corner">
+                <Link className="nav-link" to="/create">
                   Creative Corner
                 </Link>
               </li>

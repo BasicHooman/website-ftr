@@ -11,6 +11,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import ImageIcon from "@mui/icons-material/Image";
 import LinkOffIcon from "@mui/icons-material/LinkOff"; // or FontAwesome icon for "unlink"
 import Headerandnav from "./Headerandnav";
+import { handleImageUpload, handleSubmit as apiHandleSubmit } from "../api";
 
 const Createart = () => {
   const [title, setTitle] = useState("");
@@ -45,24 +46,13 @@ const Createart = () => {
     content: "<p>Hello World!</p>",
   });
 
-  const handleImageUpload = async (file) => {
-    const form = new FormData();
-    form.append("file", file);
-    const res = await fetch("http://localhost:3001/upload", {
-      method: "POST",
-      body: form,
-    });
-    const { url } = await res.json();
-    return url;
-  };
-
-  const onImageChange = async (e) => {
+  const onImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !editor) return;
 
     const reader = new FileReader();
     reader.onload = () => {
-      editor.chain().focus().setImage({ src: reader.result }).run();
+      editor.chain().focus().setImage({ src: reader.result as string }).run();
     };
     reader.readAsDataURL(file);
 
@@ -71,46 +61,20 @@ const Createart = () => {
   };
 
   const handleSubmit = async () => {
-    console.log({
+    const result = await apiHandleSubmit(
+      editor,
       title,
       author,
       displayimg,
-      content: editor.getJSON(),
-      plainText: editor.getText(),
-    });
-    if (!editor) return;
-    const content = editor.getJSON();
-
-    const article = {
-      title,
-      author,
-      displayimg,
-      content, // this is JSON
       genre,
-      summary,
-    };
-
-    try {
-      const response = await fetch("http://localhost:5173/article", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(article),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage("Article submitted successfully!");
-        console.log(data);
-      } else {
-        setMessage("Failed to submit article.");
-        console.error(data);
-      }
-    } catch (err) {
-      setMessage("Error submitting article.");
-      console.error(err);
+      summary
+    );
+    if (result.success) {
+      setMessage("Article submitted successfully!");
+      console.log(result.data);
+    } else {
+      setMessage("Failed to submit article.");
+      console.error(result.error);
     }
   };
 
@@ -121,9 +85,6 @@ const Createart = () => {
   return (
     <>
       <title>Creative Corner</title>
-      <div className="text-center">
-        <Headerandnav />
-      </div>
 
       <div className="containerr cont">
         <div className="text-start">
@@ -160,7 +121,6 @@ const Createart = () => {
               <option value="resources">Resources and Education</option>
               <option value="action">Action and Advocacy</option>
               <option value="global">Global Voices</option>
-              <option value="creative">Creative Corner</option>
             </select>
           </div>
         </div>
