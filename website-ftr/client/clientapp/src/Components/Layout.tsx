@@ -1,11 +1,11 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Headerandnav from './Headerandnav';
+import { HeaderDropdown } from '../Stylesheets/mainStyles';
 
 const Layout = () => {
   return (
     <>
-      <Headerandnav />
+      <HeaderDropdown />
       <Outlet />
     </>
   );

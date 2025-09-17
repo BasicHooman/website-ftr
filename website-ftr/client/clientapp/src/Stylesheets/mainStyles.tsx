@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import img from "../assets/big-ftr.png";
 import { Link } from "react-router-dom";
@@ -5,7 +6,81 @@ import HomeIcon from "@mui/icons-material/Home";
 import { GoogleLogin } from '@react-oauth/google';
 import type { CredentialResponse } from '@react-oauth/google';
 
-const Headerandnav = () => {
+
+interface Option {
+  value: string;
+  label: string;
+  path: string;
+}
+
+interface HeaderDropdownProps {
+  dropLabel: string;
+  options: Option[];
+  className?: string;
+  selectedValue?: string;
+}
+
+export const CoolDropdown = ({ textFormat, labelText, options, className, onChange, selectedValue, dropdownLabelTitle }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className={`
+      inline-flex
+      items-center
+      border-[#d6c7a0]
+      rounded-xl
+      bg-[#f5f1e9]
+      ${className}
+    `}>
+      <select
+        value={selectedValue}
+        onChange={onChange}
+        className={`
+          p-1 pr-8
+          justify-center
+          bg-transparent
+          ${className}
+        `}
+        style={{
+          // Add this to explicitly remove the native border
+          border: '0px', 
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'right 0.5rem center',
+          backgroundSize: '1.5em 1.5em',
+        }}
+      >
+        <option value="" disabled selected hidden>{dropdownLabelTitle}</option>
+        {options.map((option, index) => (
+          <option key={index} value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({ dropLabel, options, className, selectedValue }) => {
+  const navigate = useNavigate();
+
+  const handleDropChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = options.find(option => option.value === event.target.value);
+    if (selectedOption && selectedOption.path) {
+      navigate(selectedOption.path);
+    }
+  } 
+
+  const categoryDropdownOptions = [
+    { value: 'news', label: 'News and Features', path: '/category/news-and-features' },
+    { value: 'opinion', label: 'Opinion and Editorial', path: '/category/opinion-and-editorial' },
+    { value: 'resources', label: 'Resources and Education', path: '/category/resources-and-education' },
+    { value: 'action', label: 'Action and Advocacy', path: '/category/action-and-advocacy' },
+    { value: 'global', label: 'Global Voices', path: '/category/global-voices' },
+  ];
+
+  const aboutUsDowndownOptions = [
+    { value: 'about', label: 'About Us', path: '/about-us'},
+
+  ];
+
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -47,12 +122,13 @@ const Headerandnav = () => {
     setUser(null);
     localStorage.removeItem('user');
   };
+  
 
-  return (
+  return(
     <>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-center">
         <div className="battle">Search</div>
-        <div className="d-flex battle">         
+        <div className="d-flex battle">
           <div className="mx-2">
             {user ? (
               <div className="d-flex align-items-center">
@@ -63,7 +139,7 @@ const Headerandnav = () => {
               <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
             )}
           </div>
-               
+          
           <div className="mx-2">
             <Link to="/donate" className="btn clear">
               Donate
@@ -76,9 +152,8 @@ const Headerandnav = () => {
             <Link to="/testing-styles" className="btn clear">
               Format Testing
             </Link>
-          </div>     
           </div>
-          
+        </div>
       </div>
 
       <div className="my-2 text-center" style={{ backgroundColor: "#f5f1e9" }}>
@@ -99,38 +174,10 @@ const Headerandnav = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className="navbar navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav mx-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/category/news-and-features">
-                  News and Feautures
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/category/opinion-and-editorial">
-                  Opinion and Editorial
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/category/resources-and-education">
-                  Resources and Education
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/category/action-and-advocacy">
-                  Action and Advocacy
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/category/global-voices">
-                  Global Voices
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/create">
-                  Creative Corner
-                </Link>
-              </li>
+          <div className="navbar navbar-collapse justify-center items-center" id="navbarNav">
+            <ul className="navbar-nav mx-auto justify-center ">
+              <CoolDropdown className="" dropdownLabelTitle="Categories" options={categoryDropdownOptions} selectedValue={selectedValue} onChange={handleDropChange} />
+              <CoolDropdown className="" dropdownLabelTitle="About Us" options={aboutUsDowndownOptions} selectedValue={selectedValue} onChange={handleDropChange} />
             </ul>
           </div>
         </div>
@@ -138,6 +185,3 @@ const Headerandnav = () => {
     </>
   );
 };
-
-export default Headerandnav;
-

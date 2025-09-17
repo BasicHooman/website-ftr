@@ -7,6 +7,7 @@ import AboutUs from './Components/AboutUs';
 import HomePage from './Components/HomePage';
 import Layout from './Components/Layout';
 import { CategoryDisplay } from './Components/CategoryDisplay';
+import TestingStyles from './Components/TestingStyles';
 
 
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="about" element={<AboutUs />} />
         <Route path="debug" element={<DebugPage />} />
         <Route path="category/:categoryName" element={<CategoryDisplay />} />
+        <Route path="testing-styles" element={<TestingStyles />} />
       </Route>
     </Routes>
   );
