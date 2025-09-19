@@ -20,6 +20,17 @@ interface HeaderDropdownProps {
   selectedValue?: string;
 }
 
+export const OfficerBrick = ({ pictureLink, offcierName, officerTitle, officerDescription, officerEmail, officerPhoneNumber, officerLocation, officerYoutube, officerLinkedIn, officerInstagram, officerTwitter, officerFacebook}) => {
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <div 
+    </div>
+  );
+};
+
+
 export const CoolDropdown = ({ textFormat, labelText, options, className, onChange, selectedValue, dropdownLabelTitle }) => {
   const navigate = useNavigate();
 
