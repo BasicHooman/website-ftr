@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RenderContent from "./RenderContent";
 import { useNavigate } from "react-router-dom";
+import { TestBrick } from "../Stylesheets/mainStyles";
 
 
 type Article = {
@@ -36,6 +37,7 @@ const HomePage = () => {
 
   return (
     <>
+      <TestBrick />
       <title>For The Record</title>
 
       <div className="d-flex justify-content-center">

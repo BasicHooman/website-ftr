@@ -126,6 +126,15 @@ const Headerandnav = () => {
                   Global Voices
                 </Link>
               </li>
+              <li className="nav-item dropdown">
+                <button className="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  About
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><Link className="dropdown-item" to="/about-us">About Us</Link></li>
+                  <li><Link className="dropdown-item" to="/officers">Officers</Link></li>
+                </ul>
+              </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/create">
                   Creative Corner
