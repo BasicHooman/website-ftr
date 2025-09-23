@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderDropdown } from '../Stylesheets/mainStyles.tsx';
+import { HeaderDropdown, OfficerBrick, TestBrick } from '../Stylesheets/mainStyles.tsx';
 
 const TestingStyles = () => {
   const dropdownOptions = [
@@ -9,13 +9,14 @@ const TestingStyles = () => {
   ];
 
   return (
-    <div>
+    <div style={{ height: '100vh', overflowY: 'scroll' }}>
       <h1>Testing Header Dropdown</h1>
-      <HeaderDropdown
-        dropLabel="Test Dropdown"
-        options={dropdownOptions}
+
+      <TestBrick
+        className={""}
       />
-    </div>
+
+   </div>
   );
 };
 

@@ -20,12 +20,24 @@ interface HeaderDropdownProps {
   selectedValue?: string;
 }
 
-export const OfficerBrick = ({ pictureLink, offcierName, officerTitle, officerDescription, officerEmail, officerPhoneNumber, officerLocation, officerYoutube, officerLinkedIn, officerInstagram, officerTwitter, officerFacebook}) => {
-  const navigate = useNavigate();
+export const OfficerBrick = ({ className, pictureLink, offcierName, officerTitle, officerDescription, officerEmail, officerPhoneNumber, officerLocation, officerYoutube, officerLinkedIn, officerInstagram, officerTwitter, officerFacebook}) => {
 
   return (
     <div>
-      <div 
+      <div className={`bg-[#000000] p-8 h-1/3 w-1/3 rounded-md shadow-md justify-center ${className}`}>
+        <p>Lets go warriors</p>
+      </div>
+    </div>
+  );
+};
+
+export const TestBrick = ({ className }) => {
+
+  return (
+    <div className={`bg-blue-500 w-1/3 rounded-md shadow-md mx-auto flex justify-center items-center ${className}`}>
+      <div className={`bg-red-500 w-1/3 h-1/4 text-white`}>
+        <p>hi chat</p>
+      </div>
     </div>
   );
 };
@@ -72,8 +84,15 @@ export const CoolDropdown = ({ textFormat, labelText, options, className, onChan
 export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({ dropLabel, options, className, selectedValue }) => {
   const navigate = useNavigate();
 
-  const handleDropChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOption = options.find(option => option.value === event.target.value);
+  const handleCategoryDropChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = categoryDropdownOptions.find(option => option.value === event.target.value);
+    if (selectedOption && selectedOption.path) {
+      navigate(selectedOption.path);
+    }
+  } 
+
+  const handleAboutUsDropChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = aboutUsDowndownOptions.find(option => option.value === event.target.value);
     if (selectedOption && selectedOption.path) {
       navigate(selectedOption.path);
     }
@@ -89,6 +108,7 @@ export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({ dropLabel, optio
 
   const aboutUsDowndownOptions = [
     { value: 'about', label: 'About Us', path: '/about-us'},
+    { value: 'officers', label: 'Our Officers', path: '/officers'},
 
   ];
 
@@ -187,8 +207,8 @@ export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({ dropLabel, optio
 
           <div className="navbar navbar-collapse justify-center items-center" id="navbarNav">
             <ul className="navbar-nav mx-auto justify-center ">
-              <CoolDropdown className="" dropdownLabelTitle="Categories" options={categoryDropdownOptions} selectedValue={selectedValue} onChange={handleDropChange} />
-              <CoolDropdown className="" dropdownLabelTitle="About Us" options={aboutUsDowndownOptions} selectedValue={selectedValue} onChange={handleDropChange} />
+              <CoolDropdown className="" dropdownLabelTitle="Categories" options={categoryDropdownOptions} selectedValue={selectedValue} onChange={handleCategoryDropChange} />
+              <CoolDropdown className="" dropdownLabelTitle="About Us" options={aboutUsDowndownOptions} selectedValue={selectedValue} onChange={handleAboutUsDropChange} />
             </ul>
           </div>
         </div>

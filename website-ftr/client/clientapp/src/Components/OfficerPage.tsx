@@ -4,13 +4,10 @@ import { HeaderDropdown } from '../Stylesheets/mainStyles';
 
 export const OfficerPage = () => {
 
-
-    
-
     return (
         <div>
             <title>Our Officers</title>
-            <HeaderDropdown />
+            
 
         </div>
     )

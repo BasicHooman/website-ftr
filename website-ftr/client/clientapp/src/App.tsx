@@ -8,6 +8,7 @@ import HomePage from './Components/HomePage';
 import Layout from './Components/Layout';
 import { CategoryDisplay } from './Components/CategoryDisplay';
 import TestingStyles from './Components/TestingStyles';
+import { OfficerPage } from './Components/OfficerPage';
 
 
 
@@ -20,7 +21,8 @@ function App() {
         <Route path="articles/:id" element={<Article />} />
         <Route path="login" element={<Article />} />
         <Route path="donate" element={<Article />} />
-        <Route path="about" element={<AboutUs />} />
+        <Route path="about-us" element={<AboutUs />} />
+        <Route path="officers" element={<OfficerPage />} />
         <Route path="debug" element={<DebugPage />} />
         <Route path="category/:categoryName" element={<CategoryDisplay />} />
         <Route path="testing-styles" element={<TestingStyles />} />
