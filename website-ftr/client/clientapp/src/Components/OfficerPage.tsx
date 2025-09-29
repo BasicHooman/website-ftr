@@ -1,12 +1,62 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HeaderDropdown } from '../Stylesheets/mainStyles';
+import { CopyComponent, HeaderDropdown, PageHeader } from '../Stylesheets/mainStyles';
+import reagan_picture from "../assets/officer-pictures/rms.jpeg";
+import ava from "../assets/officer-pictures/ava.jpg";
+import saanvi from "../assets/officer-pictures/saanvi.jpg";
+import maia from "../assets/officer-pictures/maya.jpg"
 
 export const OfficerPage = () => {
 
     return (
-        <div>
+        <div className="flex flex-col items-center justify-center">
             <title>Our Officers</title>
+            
+            <PageHeader
+                headerText={"Our Officers"}
+            />
+
+            <div className={`bg-[#A79877FF] w-3/4 shadow-sm items-center flex flex-wrap justify-center`}>  
+
+                <CopyComponent 
+                    officerTitle={"Website Developer"} 
+                    officerName={"Reagan Spurlock"} 
+                    pictureLink={reagan_picture}
+                    officerLinkedIn = {"https://www.linkedin.com/in/reagan-spurlock/"}
+                    officerEmail = {"universityrms@gmail.com"}
+                />
+
+                <CopyComponent
+                    officerTitle = {"President and Founder"}
+                    officerName={"Anya Prabhakar"}
+
+                />
+            
+                <CopyComponent
+                    officerTitle = {"Website Developer"}
+                    officerName={"Sri Vatsa"}
+                />
+
+                <CopyComponent
+                    officerTitle= {"Action and Advocacy Editor"}
+                    officerName = {"Ava"}
+                    pictureLink={ava}
+                />
+
+                <CopyComponent
+                    officerTitle={"Outreach Coordinator"}
+                    officerName={"Sahasra Pothula"}
+                    officerEmail={"sahasrapothula@gmail.com"}
+                />
+
+                <CopyComponent
+                    officerTitle={"Resources and Education Editor"}
+                    officerName={"Maia E."}
+                    officerEmail={"mairoseas@gmail.com"}
+                    pictureLink={maia}
+                />
+            </div>
+
             
 
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { HeaderDropdown, OfficerBrick, TestBrick } from '../Stylesheets/mainStyles.tsx';
+import { HeaderDropdown, OfficerBrick, TestBrick, CopyComponent } from '../Stylesheets/mainStyles.tsx';
+import reagan_picture from "../assets/officer-pictures/rms.jpeg";
 
 const TestingStyles = () => {
   const dropdownOptions = [
@@ -9,13 +10,31 @@ const TestingStyles = () => {
   ];
 
   return (
-    <div style={{ height: '100vh', overflowY: 'scroll' }}>
-      <h1>Testing Header Dropdown</h1>
+    <div className="flex flex-col items-center justify-center">
 
-      <TestBrick
-        className={""}
+      <CopyComponent 
+        officerTitle={"Website Developer"} 
+        officerName={"Reagan Spurlock"} 
+        pictureLink={reagan_picture}
+        officerLinkedIn = {"https://www.linkedin.com/in/reagan-spurlock/"}
+        officerEmail = {"07spree@gmail.com"}
       />
 
+            <CopyComponent 
+        officerTitle={"Website Developer"} 
+        officerName={"Reagan Spurlock"} 
+        pictureLink={reagan_picture}
+        officerLinkedIn = {"https://www.linkedin.com/in/reagan-spurlock/"}
+        officerEmail = {"07spree@gmail.com"}
+      />
+
+            <CopyComponent 
+        officerTitle={"Website Developer"} 
+        officerName={"Reagan Spurlock"} 
+        pictureLink={reagan_picture}
+        officerLinkedIn = {"https://www.linkedin.com/in/reagan-spurlock/"}
+        officerEmail = {"07spree@gmail.com"}
+      />
    </div>
   );
 };
