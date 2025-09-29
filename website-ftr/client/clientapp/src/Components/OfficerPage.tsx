@@ -18,6 +18,29 @@ export const OfficerPage = () => {
 
             <div className={`bg-[#A79877FF] w-3/4 shadow-sm items-center flex flex-wrap justify-center`}>  
 
+                <CopyComponent
+                    officerTitle= {"Action and Advocacy Editor"}
+                    officerName = {"Ava"}
+                    pictureLink={ava}
+                />
+
+                <CopyComponent
+                    officerTitle={"Resources and Education Editor"}
+                    officerName={"Maia E."}
+                    officerEmail={"mairoseas@gmail.com"}
+                    pictureLink={maia}
+                />   
+
+                <CopyComponent
+                    officerTitle={"Outreach Coordinator"}
+                    officerName={"Sahasra Pothula"}
+                    officerEmail={"sahasrapothula@gmail.com"}
+                />                
+                <CopyComponent
+                    officerTitle = {"President and Founder"}
+                    officerName={"Anya Prabhakar"}
+
+                />
                 <CopyComponent 
                     officerTitle={"Website Developer"} 
                     officerName={"Reagan Spurlock"} 
@@ -27,33 +50,8 @@ export const OfficerPage = () => {
                 />
 
                 <CopyComponent
-                    officerTitle = {"President and Founder"}
-                    officerName={"Anya Prabhakar"}
-
-                />
-            
-                <CopyComponent
                     officerTitle = {"Website Developer"}
                     officerName={"Sri Vatsa"}
-                />
-
-                <CopyComponent
-                    officerTitle= {"Action and Advocacy Editor"}
-                    officerName = {"Ava"}
-                    pictureLink={ava}
-                />
-
-                <CopyComponent
-                    officerTitle={"Outreach Coordinator"}
-                    officerName={"Sahasra Pothula"}
-                    officerEmail={"sahasrapothula@gmail.com"}
-                />
-
-                <CopyComponent
-                    officerTitle={"Resources and Education Editor"}
-                    officerName={"Maia E."}
-                    officerEmail={"mairoseas@gmail.com"}
-                    pictureLink={maia}
                 />
             </div>
 
