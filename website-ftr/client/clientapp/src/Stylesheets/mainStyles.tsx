@@ -196,24 +196,19 @@ export const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownPro
   return(
     <div ref={ref} className="fixed top-0 w-full z-50 bg-white">
       <div className="d-flex justify-content-center">
-        <div className="battle">Search</div>
         <div className="d-flex battle">
           <div className="mx-2">
             {user ? (
               <div className="d-flex align-items-center">
                 <span className="mx-2">Welcome, {user.username.split(' ')[0]}</span>
                 <button onClick={handleLogout} className="btn btn-primary">Logout</button>
+                
               </div>
             ) : (
               <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
             )}
           </div>
           
-          <div className="mx-2">
-            <Link to="/donate" className="btn clear">
-              Donate
-            </Link>
-          </div>
           <div className="mx-2">
             <Link to="/" className="btn clear">
               <HomeIcon />
