@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd website-ftr/client/clientapp
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: website-ftr/client/clientapp/dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - website-ftr/client/clientapp/node_modules/**/*
