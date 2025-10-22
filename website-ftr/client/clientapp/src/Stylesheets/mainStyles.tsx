@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, type ChangeEvent } from "react";
 import img from "../assets/big-ftr.png";
 import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
@@ -22,53 +22,77 @@ interface HeaderDropdownProps {
   selectedValue?: string;
 }
 
-export const PageHeader = ( {className, headerText} ) => {
+interface PageHeaderProps {
+  className?: string;
+  headerText: any;
+}
+
+export const PageHeader = ({ className, headerText }: PageHeaderProps) => {
   return (
     <>
-      <div className = {`bg-[#d6c7a0] text-gray-800 w-full mb-4 shadow-sm text-center  ${className}`}>
+      <div className={`bg-[#d6c7a0] text-gray-800 w-full mb-4 shadow-sm text-center  ${className}`}>
         <h1 className={"items-center justify-center"}>{headerText}</h1>
       </div>
     </>
   );
 };
 
-export const OfficerBrick = ({ className, pictureLink, officerName, officerTitle, officerDescription, officerEmail, officerPhoneNumber, officerLocation, officerYoutube, officerLinkedIn, officerInstagram, officerTwitter, officerFacebook}) => {
+interface NameBoxBrickProps {
+  className?: string;
+  officerName: string;
+}
 
-  const OfficerCredentials = {
-    
-    if(officerName){
-      
-    }
-  }
+export const NameBoxBrick = ({ className, officerName }: NameBoxBrickProps) => {
+  return (
+    <div className={`text-center mb-4`}>
+      <p className="font-bold bg-[#d6c7a0] p-2 rounded-md">{officerName}</p>
+    </div>
+  );
+};
 
+interface OfficerBrickProps {
+  className?: string;
+  pictureLink?: string;
+  officerName?: string;
+  officerTitle?: string;
+  officerDescription?: string;
+  officerEmail?: string;
+  officerPhoneNumber?: string;
+  officerLocation?: string;
+  officerYoutube?: string;
+  officerLinkedIn?: string;
+  officerInstagram?: string;
+  officerTwitter?: string;
+  officerFacebook?: string;
+}
+
+export const OfficerBrick = ({ className, pictureLink, officerName, officerTitle, officerDescription, officerEmail }: OfficerBrickProps) => {
   return (
     <>
       <div className={`bg-[#f5f1e9] p-8 h-1/3 w-1/6 rounded-md shadow-md justify-center ${className}`}>
-          <div className={`bg-[#d6c7a0]  h-1/8 justify-center`}>
-            <p>{officerName}</p>
-          </div>
-          <div className={`bg-[#d6c7a0]  h-1/8 justify-center`}>
-            <p>{officerTitle}</p>
-          </div>
-          
-
-
-          <div className={`bg-[#d6c7a0]  h-1/8 justify-center`}>
-            <p>{officerDescription}</p>
-          </div>
-
-          <div className={`bg-[#d6c7a0]  h-1/2 justify-center`}>
-            <p>Officer Email: {officerEmail}</p>
-          </div>
-
+        <div className={`bg-[#d6c7a0]  h-1/8 justify-center`}>
+          <p>{officerName}</p>
+        </div>
+        <div className={`bg-[#d6c7a0]  h-1/8 justify-center`}>
+          <p>{officerTitle}</p>
+        </div>
+        <div className={`bg-[#d6c7a0]  h-1/8 justify-center`}>
+          <p>{officerDescription}</p>
+        </div>
+        <div className={`bg-[#d6c7a0]  h-1/2 justify-center`}>
+          <p>Officer Email: {officerEmail}</p>
+        </div>
         <p>Lets go warriors</p>
       </div>
     </>
   );
 };
 
-export const TestBrick = ({ className }) => {
+interface TestBrickProps {
+  className?: string;
+}
 
+export const TestBrick = ({ className }: TestBrickProps) => {
   return (
     <div className={`bg-blue-500 w-1/3 rounded-md shadow-md mx-auto flex justify-center items-center ${className}`}>
       <div className={`bg-red-500 w-1/3 h-1/4 text-white`}>
@@ -78,11 +102,18 @@ export const TestBrick = ({ className }) => {
   );
 };
 
+interface CoolDropdownProps {
+  textFormat?: any;
+  labelText?: any;
+  options: any;
+  className?: string;
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  selectedValue?: any;
+  dropdownLabelTitle: any;
+}
 
-export const CoolDropdown = ({ textFormat, labelText, options, className, onChange, selectedValue, dropdownLabelTitle }) => {
+export const CoolDropdown = ({ textFormat, labelText, options, className, onChange, selectedValue, dropdownLabelTitle }: CoolDropdownProps) => {
   const navigate = useNavigate();
-
-  
 
   return (
     <div className={`
@@ -104,14 +135,14 @@ export const CoolDropdown = ({ textFormat, labelText, options, className, onChan
         `}
         style={{
           // Add this to explicitly remove the native border
-          border: '0px', 
+          border: '0px',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'right 0.5rem center',
           backgroundSize: '1.5em 1.5em',
         }}
       >
         <option value="" disabled hidden>{dropdownLabelTitle}</option>
-        {options.map((option, index) => (
+        {options.map((option: any, index: number) => (
           <option key={index} value={option.value}>{option.label}</option>
         ))}
       </select>
@@ -127,14 +158,14 @@ export const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownPro
     if (selectedOption && selectedOption.path) {
       navigate(selectedOption.path);
     }
-  } 
+  }
 
   const handleAboutUsDropChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = aboutUsDowndownOptions.find(option => option.value === event.target.value);
     if (selectedOption && selectedOption.path) {
       navigate(selectedOption.path);
     }
-  } 
+  }
 
   const categoryDropdownOptions = [
     { value: 'news', label: 'News and Features', path: '/category/news-and-features' },
@@ -145,9 +176,8 @@ export const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownPro
   ];
 
   const aboutUsDowndownOptions = [
-    { value: 'about', label: 'About Us', path: '/about-us'},
-    { value: 'officers', label: 'Our Officers', path: '/officers'},
-
+    { value: 'about', label: 'About Us', path: '/about-us' },
+    { value: 'officers', label: 'Our Officers', path: '/officers' },
   ];
 
   const [user, setUser] = useState<any>(null);
@@ -191,9 +221,8 @@ export const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownPro
     setUser(null);
     localStorage.removeItem('user');
   };
-  
 
-  return(
+  return (
     <div ref={ref} className="fixed top-0 w-full z-50 bg-white">
       <div className="d-flex justify-content-center">
         <div className="d-flex battle">
@@ -202,13 +231,11 @@ export const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownPro
               <div className="d-flex align-items-center">
                 <span className="mx-2">Welcome, {user.username.split(' ')[0]}</span>
                 <button onClick={handleLogout} className="btn btn-primary">Logout</button>
-                
               </div>
             ) : (
               <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
             )}
           </div>
-          
           <div className="mx-2">
             <Link to="/" className="btn clear">
               <HomeIcon />
@@ -250,14 +277,29 @@ export const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownPro
   );
 });
 
-export const CopyComponent = ({pictureLink, officerDescription, officerName, officerTitle, officerEmail, officerPhone, officerLocation, officerYoutube, officerLinkedIn, officerInstagram, officerTwitter, officerFacebook }) => {
+interface CopyComponentProps {
+  pictureLink?: any;
+  officerDescription?: any;
+  officerName?: any;
+  officerTitle?: any;
+  officerEmail?: any;
+  officerPhone?: any;
+  officerLocation?: any;
+  officerYoutube?: any;
+  officerLinkedIn?: any;
+  officerInstagram?: any;
+  officerTwitter?: any;
+  officerFacebook?: any;
+}
+
+export const CopyComponent = ({ pictureLink, officerDescription, officerName, officerTitle, officerEmail, officerPhone, officerLocation, officerYoutube, officerLinkedIn, officerInstagram, officerTwitter, officerFacebook }: CopyComponentProps) => {
   const nameRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLParagraphElement>(null);
   const [nameFontSize, setNameFontSize] = useState('1.5rem');
-  const [titleFontSize, setTitleFontSize] = useState('1rem');
+  const [titleFontSize, setTitleFontSize] = useState('1.rem');
 
   useEffect(() => {
-    const adjustFontSize = (ref: React.RefObject<HTMLParagraphElement>, initialSize: string, setFontSize: React.Dispatch<React.SetStateAction<string>>) => {
+    const adjustFontSize = (ref: React.RefObject<HTMLParagraphElement | null>, initialSize: string, setFontSize: React.Dispatch<React.SetStateAction<string>>) => {
       if (ref.current) {
         ref.current.style.fontSize = initialSize; // Reset to initial size
         let currentSize = parseFloat(initialSize);
@@ -273,25 +315,22 @@ export const CopyComponent = ({pictureLink, officerDescription, officerName, off
       }
     };
 
-    adjustFontSize(nameRef, '1.5rem', setNameFontSize);
-    adjustFontSize(titleRef, '1rem', setTitleFontSize);
-
-    // Re-adjust on window resize
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       adjustFontSize(nameRef, '1.5rem', setNameFontSize);
       adjustFontSize(titleRef, '1rem', setTitleFontSize);
-    });
+    };
+
+    handleResize(); // Adjust on initial render
+
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', () => {
-        adjustFontSize(nameRef, '1.5rem', setNameFontSize);
-        adjustFontSize(titleRef, '1rem', setTitleFontSize);
-      });
+      window.removeEventListener('resize', handleResize);
     };
   }, [officerName, officerTitle]);
 
   return (
-    <div className={`bg-[#f5f1e9] p-8 w-1/6 h-[32rem] rounded-md shadow-md justify-center outline outline-4 outline-round-md outline-offset-2 outline-[#d6c7a0]`} style = {{transform:'scale(0.9)'}}>
+    <div className={`bg-[#f5f1e9] p-8 w-1/6 h-[32rem] rounded-md shadow-md justify-center outline outline-4 outline-round-md outline-offset-2 outline-[#d6c7a0]`} style={{ transform: 'scale(0.9)' }}>
       <div className="text-center mb-4">
         <p ref={nameRef} className="font-bold bg-[#d6c7a0] p-2 rounded-md" style={{ fontSize: nameFontSize }}>{officerName}</p>
       </div>
@@ -299,18 +338,18 @@ export const CopyComponent = ({pictureLink, officerDescription, officerName, off
         <p ref={titleRef} className="bg-[#d6c7a0] p-2 rounded-md" style={{ fontSize: titleFontSize }}>{officerTitle}</p>
       </div>
       <div className="bg-[#d6c7a0] rounded-md mb-4 flex justify-center items-center">
-        <img src={pictureLink ? pictureLink : defaultImage} alt="officerImage" className="w-7/8 p-4"/>
+        <img src={pictureLink ? pictureLink : defaultImage} alt="officerImage" className="w-7/8 p-4" />
       </div>
       {(officerEmail || officerYoutube || officerLinkedIn || officerInstagram || officerTwitter || officerFacebook) && (
         <div className="socials-box text-center bg-[#d6c7a0] p-2 rounded-md mb-4">
-          <p className="p-2 rounded-md mb-2" style={{fontSize: '1rem'}}>Contacts</p>
+          <p className="p-2 rounded-md mb-2" style={{ fontSize: '1rem' }}>Contacts</p>
           <div className="flex flex-wrap">
-            {officerEmail && <p className="w-full" style={{ fontSize: '0.5rem'}}>Email: <a target="_blank" rel="noopener noreferrer">{officerEmail}</a></p>}
-            {officerYoutube && <p className="w-1/2" style={{ fontSize: '0.5rem'}}><a href={officerYoutube} target="_blank" rel="noopener noreferrer">YouTube</a></p>}
-            {officerLinkedIn && <p className="w-1/2" style={{ fontSize: '0.5rem'}}><a href={officerLinkedIn} target="_blank" rel="noopener noreferrer">LinkedIn</a></p>}
-            {officerInstagram && <p className="w-1/2" style={{ fontSize: '0.5rem'}}><a href={officerInstagram} target="_blank" rel="noopener noreferrer">Instagram</a></p>}
-            {officerTwitter && <p className="w-1/2" style={{ fontSize: '0.5rem'}}><a href={officerTwitter} target="_blank" rel="noopener noreferrer">X (Twitter)</a></p>}
-            {officerFacebook && <p className="w-1/2" style={{ fontSize: '0.5rem'}}><a href={officerFacebook} target="_blank" rel="noopener noreferrer">Facebook</a></p>}
+            {officerEmail && <p className="w-full" style={{ fontSize: '0.5rem' }}>Email: <a target="_blank" rel="noopener noreferrer">{officerEmail}</a></p>}
+            {officerYoutube && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerYoutube} target="_blank" rel="noopener noreferrer">YouTube</a></p>}
+            {officerLinkedIn && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerLinkedIn} target="_blank" rel="noopener noreferrer">LinkedIn</a></p>}
+            {officerInstagram && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerInstagram} target="_blank" rel="noopener noreferrer">Instagram</a></p>}
+            {officerTwitter && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerTwitter} target="_blank" rel="noopener noreferrer">X (Twitter)</a></p>}
+            {officerFacebook && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerFacebook} target="_blank" rel="noopener noreferrer">Facebook</a></p>}
           </div>
         </div>
       )}

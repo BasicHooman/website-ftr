@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { FloatingMenu, BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Strike from "@tiptap/extension-strike";
 import Heading from "@tiptap/extension-heading";
@@ -10,7 +9,6 @@ import FileHandler from "@tiptap/extension-file-handler";
 import LinkIcon from "@mui/icons-material/Link";
 import ImageIcon from "@mui/icons-material/Image";
 import LinkOffIcon from "@mui/icons-material/LinkOff"; // or FontAwesome icon for "unlink"
-import Headerandnav from "./Headerandnav";
 import { handleImageUpload, handleSubmit as apiHandleSubmit } from "../api";
 
 const Createart = () => {
@@ -69,12 +67,14 @@ const Createart = () => {
       genre,
       summary
     );
-    if (result.success) {
-      setMessage("Article submitted successfully!");
-      console.log(result.data);
-    } else {
-      setMessage("Failed to submit article.");
-      console.error(result.error);
+    if (result) {
+      if (result.success) {
+        setMessage("Article submitted successfully!");
+        console.log(result.data);
+      } else {
+        setMessage("Failed to submit article.");
+        console.error(result.error);
+      }
     }
   };
 
@@ -145,7 +145,6 @@ const Createart = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="write d-flex justify-content-center align-items-center"
-          rows={1}
         />
         <input
           type="text"
@@ -157,19 +156,6 @@ const Createart = () => {
       </div>
       <div style={{ position: "relative" }} className="containerr">
         <EditorContent style={{ position: "relative" }} editor={editor} />
-
-        <FloatingMenu
-          editor={editor}
-          shouldShow={({ state }) => {
-            // show only on empty paragraph
-            const { $from } = state.selection;
-            return (
-              $from.parent.type.name === "paragraph" && state.selection.empty
-            );
-          }}
-        >
-          {/* more actions */}
-        </FloatingMenu>
 
         <BubbleMenu
           editor={editor}
