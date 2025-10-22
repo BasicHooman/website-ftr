@@ -14,7 +14,7 @@ const Layout = () => {
 
   return (
     <>
-      <HeaderDropdown ref={headerRef} />
+      <HeaderDropdown ref={headerRef} dropLabel="" options={[]} />
       <div style={{ marginTop: headerHeight }}>
         <Outlet />
       </div>
