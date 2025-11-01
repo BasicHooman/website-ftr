@@ -37,7 +37,6 @@ const HomePage = () => {
 
   return (
     <>
-      <TestBrick />
       <title>For The Record</title>
 
       <div className="d-flex justify-content-center">
