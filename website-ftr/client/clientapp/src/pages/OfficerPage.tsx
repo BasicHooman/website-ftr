@@ -1,4 +1,5 @@
-import { CopyComponent, PageHeader } from '../Stylesheets/mainStyles';
+import OfficerBrick from "../Stylesheets/OfficerBrick";
+import PageHeader from "../Stylesheets/PageHeader";
 import reagan_picture from "../assets/officer-pictures/rms.jpeg";
 import ava from "../assets/officer-pictures/ava.jpg";
 // please add saanvi
@@ -17,30 +18,30 @@ const OfficerPage : React.FC = () => {
 
             <div className={`bg-[#A79877FF] w-3/4 shadow-sm items-center flex flex-wrap justify-center`}>  
 
-                <CopyComponent
+                <OfficerBrick
                     officerTitle= {"Action and Advocacy Editor"}
                     officerName = {"Ava"}
                     pictureLink={ava}
                 />
 
-                <CopyComponent
+                <OfficerBrick
                     officerTitle={"Resources and Education Editor"}
                     officerName={"Maia E."}
                     officerEmail={"mairoseas@gmail.com"}
                     pictureLink={maia}
                 />   
 
-                <CopyComponent
+                <OfficerBrick
                     officerTitle={"Outreach Coordinator"}
                     officerName={"Sahasra Pothula"}
                     officerEmail={"sahasrapothula@gmail.com"}
                 />                
-                <CopyComponent
+                <OfficerBrick
                     officerTitle = {"President and Founder"}
                     officerName={"Anya Prabhakar"}
 
                 />
-                <CopyComponent 
+                <OfficerBrick 
                     officerTitle={"Website Developer"} 
                     officerName={"Reagan Spurlock"} 
                     pictureLink={reagan_picture}
@@ -48,7 +49,7 @@ const OfficerPage : React.FC = () => {
                     officerEmail = {"universityrms@gmail.com"}
                 />
 
-                <CopyComponent
+                <OfficerBrick
                     officerTitle = {"Website Developer"}
                     officerName={"Sri Vatsa"}
                 />
