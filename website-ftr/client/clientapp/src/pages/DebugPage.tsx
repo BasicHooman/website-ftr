@@ -4,8 +4,8 @@ import axios from 'axios';
 const DebugPage: React.FC = () => {
   const [name, setName] = useState('');
   const [position, setPosition] = useState('');
-  const [bio, setBio] = useState('');
-  const [image, setImage] = useState(null);
+  const [bio, setBio] = useState<string>('');
+  const [image, setImage] = useState<File | null>(null);
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState('');
@@ -15,14 +15,16 @@ const DebugPage: React.FC = () => {
   const [x_social, setX_social] = useState('');
   const [facebook, setFacebook] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('position', position);
     formData.append('bio', bio);
-    formData.append('image', image);
+    if (image) {
+      formData.append('image', image);
+    }
     formData.append('email', email);
     formData.append('phoneNumber', phoneNumber);
     formData.append('location', location);
@@ -63,26 +65,31 @@ const DebugPage: React.FC = () => {
       });
       console.log('Server Response:', response.data);
       alert('Officer added successfully!');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error adding officer:', error);
 
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Server Error Data:', error.response.data);
-        console.error('Server Error Status:', error.response.status);
-        console.error('Server Error Headers:', error.response.headers);
-        alert(`Error adding officer: ${error.response.data.message || 'Server responded with an error.'} Status: ${error.response.status}`);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.error('Network Error: No response received from server.', error.request);
-        alert('Network Error: Could not connect to the server. Please check your connection.');
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error('Server Error Data:', error.response.data);
+          console.error('Server Error Status:', error.response.status); 
+          console.error('Server Error Headers:', error.response.headers);
+          alert(`Error adding officer: ${(error.response.data as { message?: string })?.message || 'Server responded with an error.'} Status: ${error.response.status}`);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.error('Network Error: No response received from server.', error.request);
+          alert('Network Error: Could not connect to the server. Please check your connection.');
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Request Setup Error:', error.message);
+          alert(`An unexpected error occurred: ${error.message}`);
+        }
       } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Request Setup Error:', error.message);
-        alert(`An unexpected error occurred: ${error.message}`);
+        console.error('Unexpected non-Axios error:', error);
+        alert('An unexpected error occurred.');
       }
     }
   };
@@ -105,7 +112,7 @@ const DebugPage: React.FC = () => {
         </div>
         <div>
           <label>Image:</label>
-          <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+          <input type="file" onChange={(e) => e.target.files && setImage(e.target.files[0])} />
         </div>
         <div>
           <label>Email:</label>
