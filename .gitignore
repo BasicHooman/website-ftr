@@ -1,3 +1,4 @@
 node_modules/
 website-ftr/client/clientapp/src/Stylesheets/mainStyles.jsx
-/website-ftr/client/clientapp/src/reference/super-illegal.jsx
+/website-ftr/client/clientapp/src/reference/
+website-ftr/Server/.env

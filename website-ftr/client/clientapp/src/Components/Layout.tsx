@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { HeaderDropdown } from '../Stylesheets/mainStyles';
 
-const Layout = () => {
+const Layout : React.FC = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 // Define an interface for the article object
@@ -9,7 +9,7 @@ interface Article {
   summary: string;
 }
 
-export const CategoryDisplay = () => {
+const CategoryDisplay : React.FC = () => {
   // Use the Article interface to type the state
   const [articles, setArticles] = useState<Article[]>([]);
   const { categoryName } = useParams<{ categoryName: string }>();
@@ -56,3 +56,5 @@ export const CategoryDisplay = () => {
     </div>
   );
 };
+
+export default CategoryDisplay;
