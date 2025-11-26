@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true, // Only for users who sign in with Google
             unique: true, // Each Google ID must be unique
         },
-        role: {
-            type: DataTypes.STRING,
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
-            defaultValue: 'user',
+            defaultValue: false,
         },
     });
 

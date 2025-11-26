@@ -1,45 +1,53 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { Officers } = require('../models');
-const multer = require('multer');
-const sharp = require('sharp');
+const db = require("../models");
+const Articles = db.Articles;
 
-// Multer storage configuration
-const storage = multer.memoryStorage();
+const SEED_PREFIX = "[SEED]";
+const CATEGORIES = ["news", "opinion", "resources", "action", "global"];
 
-const upload = multer({ storage: storage });
-
-router.post('/add-officer', upload.single('image'), async (req, res) => {
+// POST /api/debug/seed-articles
+router.post("/seed-articles", async (req, res) => {
   try {
-    const { name, position, bio, email, phoneNumber, location, youtube, linkedin, instagram, x_social, facebook } = req.body;
-    let imageBuffer = req.file ? req.file.buffer : null;
-
-    if (imageBuffer) {
-      // Resize image if larger than 300x300
-      imageBuffer = await sharp(imageBuffer)
-        .resize({ width: 300, height: 300, fit: sharp.fit.cover, withoutEnlargement: true })
-        .toBuffer();
+    const articlesToCreate = [];
+    for (const category of CATEGORIES) {
+      for (let i = 1; i <= 2; i++) {
+        articlesToCreate.push({
+          title: `${SEED_PREFIX} ${category} Article ${i}`,
+          content: JSON.stringify([
+            { type: 'paragraph', children: [{ text: `This is the filler content for the ${category} article #${i}.` }] }
+          ]),
+          author: "Seed Script",
+          displayimg: "https://via.placeholder.com/463x308",
+          genre: category,
+          summary: `This is a short summary for the seeded ${category} article #${i}.`,
+        });
+      }
     }
 
-    const newOfficer = await Officers.create({
-      fullName: name,
-      title: position,
-      photo: imageBuffer,
-      description: bio,
-      email,
-      phoneNumber,
-      location,
-      youtube,
-      linkedin,
-      instagram,
-      x_social,
-      facebook,
-    });
-
-    res.status(201).json(newOfficer);
+    await Articles.bulkCreate(articlesToCreate);
+    res.status(201).json({ message: "Successfully seeded 10 articles." });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error("Error seeding articles:", error);
+    res.status(500).json({ error: "Failed to seed articles." });
+  }
+});
+
+// DELETE /api/debug/seed-articles
+router.delete("/seed-articles", async (req, res) => {
+  try {
+    const { Op } = require('sequelize');
+    const result = await Articles.destroy({
+      where: {
+        title: {
+          [Op.like]: `${SEED_PREFIX}%`,
+        },
+      },
+    });
+    res.status(200).json({ message: `Successfully deleted ${result} seeded articles.` });
+  } catch (error) {
+    console.error("Error deleting seeded articles:", error);
+    res.status(500).json({ error: "Failed to delete seeded articles." });
   }
 });
 

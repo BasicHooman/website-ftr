@@ -13,26 +13,34 @@ const CategoryDisplay : React.FC = () => {
   // Use the Article interface to type the state
   const [articles, setArticles] = useState<Article[]>([]);
   const { categoryName } = useParams<{ categoryName: string }>();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchArticles = async (page: number) => {
+    if (categoryName) { // Ensure categoryName is not undefined
+      try {
+        const response = await fetch(`http://localhost:3001/api/articles/category/${categoryName}?page=${page}`);
+        if (response.ok) {
+          const data = await response.json();
+          setArticles(data.articles);
+          setTotalPages(data.totalPages);
+          setCurrentPage(data.currentPage);
+        } else {
+          console.error('Failed to fetch articles');
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching articles:', error);
+      }
+    }
+  };
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      if (categoryName) { // Ensure categoryName is not undefined
-        try {
-          const response = await fetch(`http://localhost:3001/Articles/category/${categoryName}`);
-          if (response.ok) {
-            const data = await response.json();
-            setArticles(data);
-          } else {
-            console.error('Failed to fetch articles');
-          }
-        } catch (error) {
-          console.error('An error occurred while fetching articles:', error);
-        }
-      }
-    };
-
-    fetchArticles();
+    fetchArticles(1);
   }, [categoryName]);
+
+  const handlePageChange = (newPage: number) => {
+    fetchArticles(newPage);
+  };
 
   return (
     <div className="container">
@@ -52,6 +60,22 @@ const CategoryDisplay : React.FC = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="d-flex justify-content-center">
+        <button
+          className="btn btn-primary mx-1"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-primary mx-1"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

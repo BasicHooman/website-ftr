@@ -5,6 +5,7 @@ const { Users } = require('../models'); // Assuming your user model is exported 
 
 // It's highly recommended to store your client ID in an environment variable
 const GOOGLE_CLIENT_ID = '1006918822791-8u7l0v8mlkv5im9ogh0acefffhpmfila.apps.googleusercontent.com';
+const ADMIN_EMAILS = ['hvsram@gmail.com', 'admin@example.com']; // Add your admin emails here
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -25,6 +26,8 @@ router.post('/google-login', async (req, res) => {
     const payload = ticket.getPayload();
     const { sub: googleId, email, name, picture } = payload;
 
+    const isAdmin = ADMIN_EMAILS.includes(email);
+
     // Check if user already exists in your database
     let user = await Users.findOne({ where: { googleId } });
 
@@ -34,8 +37,15 @@ router.post('/google-login', async (req, res) => {
         googleId,
         email,
         username: name, // Or however you want to handle usernames
+        isAdmin,
         // You might want to add other fields like 'picture' to your model
       });
+    } else {
+      // If user exists, update their admin status if necessary
+      if (user.isAdmin !== isAdmin) {
+        user.isAdmin = isAdmin;
+        await user.save();
+      }
     }
 
     // Here, you would typically create a session or issue a JWT for your application
@@ -46,6 +56,7 @@ router.post('/google-login', async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        isAdmin: user.isAdmin,
       },
     });
 
