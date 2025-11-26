@@ -15,23 +15,31 @@ type Article = {
 const HomePage : React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const nav = useNavigate();
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await fetch("http://localhost:5173/article");
-        const data = await response.json();
-        setArticles(data);
-      } catch (error) {
-        console.error("Error fetching articles:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchArticles = async (page: number) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/articles?page=${page}`);
+      const data = await response.json();
+      setArticles(data.articles);
+      setTotalPages(data.totalPages);
+      setCurrentPage(data.currentPage);
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchArticles();
+  useEffect(() => {
+    fetchArticles(1);
   }, []);
+
+  const handlePageChange = (newPage: number) => {
+    fetchArticles(newPage);
+  };
 
   if (loading) return <p>Loading...</p>;
 
@@ -119,6 +127,22 @@ const HomePage : React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+      <div className="d-flex justify-content-center">
+        <button
+          className="btn btn-primary mx-1"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-primary mx-1"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </>
   );

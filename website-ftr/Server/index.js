@@ -26,7 +26,7 @@ app.use("/upload", uploadRouter);
 
 
 const debugRouter = require('./Routes/Debug');
-app.use('/debug', debugRouter);
+app.use('/api/debug', debugRouter);
 
 const officersRouter = require('./Routes/Officers');
 app.use('/officers', officersRouter);

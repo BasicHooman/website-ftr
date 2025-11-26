@@ -7,6 +7,7 @@ import type { CredentialResponse } from '@react-oauth/google';
 
 interface User {
   username: string;
+  isAdmin: boolean;
   // Add other user properties here as needed
 }
 
@@ -87,7 +88,7 @@ const Headerandnav : React.FC = () => {
       </div>
 
       <div className="my-2 text-center" style={{ backgroundColor: "#f5f1e9" }}>
-        <img src={img} width="460" height="100" />
+        <img src={img} className = {"w-3/4 h-1/4"} />
       </div>
 
       <nav className="navbar navbar-expand-lg navbar-bottom-shadow">
@@ -140,6 +141,13 @@ const Headerandnav : React.FC = () => {
                   <li><Link className="dropdown-item" to="/officers">Officers</Link></li>
                 </ul>
               </li>
+              {user?.isAdmin && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/createart">
+                    Create Article
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
                 <Link className="nav-link" to="/create">
                   Creative Corner

@@ -4,8 +4,21 @@ const db = require("../models");
 const Articles = db.Articles;
 
 router.get("/", async (req, res) => {
-  const listofarticles = await Articles.findAll();
-  res.json(listofarticles);
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  try {
+    const { count, rows } = await Articles.findAndCountAll({
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']], // To get the latest articles first
+    });
+    const totalPages = Math.ceil(count / limit);
+    res.json({ articles: rows, totalPages, currentPage: page });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch articles" });
+  }
 });
 
 router.get("/:id", async (req, res) => {
@@ -25,8 +38,22 @@ router.get("/:id", async (req, res) => {
 
 router.get("/category/:category", async (req, res) => {
   const category = req.params.category;
-  const articles = await Articles.findAll({where: {genre: category}});
-  res.json(articles);
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  try {
+    const { count, rows } = await Articles.findAndCountAll({
+      where: { genre: category },
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']], // To get the latest articles first
+    });
+    const totalPages = Math.ceil(count / limit);
+    res.json({ articles: rows, totalPages, currentPage: page });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch articles" });
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -54,3 +81,4 @@ router.post("/", async (req, res) => {
 });
 
 module.exports = router;
+

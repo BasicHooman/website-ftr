@@ -19,7 +19,7 @@ const Article : React.FC<ArticleProps> = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`http://localhost:5173/article/${id}`);
+        const response = await fetch(`http://localhost:3001/api/articles/${id}`);
         const data: ArticleProps = await response.json();
         setArticle(data);
       } catch (error) {
