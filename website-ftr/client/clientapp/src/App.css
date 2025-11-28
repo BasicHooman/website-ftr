@@ -210,6 +210,8 @@ body{
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  box-sizing: border-box;
+  height: 40px;
 }
 .cont{
   margin-top: 3rem;
