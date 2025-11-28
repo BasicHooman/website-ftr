@@ -99,17 +99,7 @@ const Createart = () => {
         <div className=" w-full">
           <div className="containerr cont">
           <div className="text-start">
-            {thumbnailName && (
-              <div
-                style={{
-                  marginTop: "0.5rem",
-                  fontStyle: "italic",
-                  fontSize: "0.9rem",
-                }}
-              >
-                Selected file: {thumbnailName}
-              </div>
-            )}
+
             <div style={{ padding: "1rem" }}>
               <input
                 type="text"
@@ -119,31 +109,36 @@ const Createart = () => {
                 className="write d-flex justify-content-center align-items-center"
               />
             </div>   
-                       
-            <div className="d-flex justify-content-center align-items-center">
-              <label htmlFor="thumbnail-upload" className="thumbnail ">
-                <div className="mx-1 " style={{ paddingBottom: ".1rem" }}>
-                  <ImageIcon fontSize="small" />
-                </div>
-                <div className="mx-1">Upload Thumbnail</div>
-              </label>             
-              <div style={{ marginTop: "1rem" }}>
-                <select
-                  id="genre-select"
-                  value={genre}
-                  onChange={(e) => setGenre(e.target.value)}
-                  style={{ padding: "0.25rem", fontSize: "1rem" }}
-                  className="thumbnail"
-                >
-                  <option value="">-- Select Genre --</option>
-                  <option value="news">News and Features</option>
-                  <option value="opinion">Opinion and Editorial</option>
-                  <option value="resources">Resources and Education</option>
-                  <option value="action">Action and Advocacy</option>
-                  <option value="global">Global Voices</option>
-                </select>
+
+            <div className="d-flex justify-content-center align-items-center gap-4">
+              
+              <label htmlFor="thumbnail-upload" className="thumbnail d-flex align-items-center">
+                <ImageIcon fontSize="small" className="mr-2" /> 
+                <span>Upload Thumbnail</span>
+              </label> 
+
+              <select
+                id="genre-select"
+                value={genre}
+                onChange={(e) => setGenre(e.target.value)}
+                className="thumbnail"
+              >
+                <option value="">-- Select Genre --</option>
+                <option value="news">News and Features</option>
+                <option value="opinion">Opinion and Editorial</option>
+                <option value="resources">Resources and Education</option>
+                <option value="action">Action and Advocacy</option>
+                <option value="global">Global Voices</option>
+              </select>
+              
             </div>
-            </div>
+            {thumbnailName && (
+              <div
+                className="text-center bg-[#f5f1e9] text-black border border-black rounded-lg shadow-md py-2 px-3 mt-2"
+              >
+                Selected file: {thumbnailName}
+              </div>
+            )}
           </div>
             <input
               id="thumbnail-upload"
@@ -165,7 +160,7 @@ const Createart = () => {
             <BubbleMenu
               editor={editor}
               shouldShow={({ editor }: { editor: Editor }) => editor.state.selection.content().size > 0}
-              className="text-[.1rem] text-[#242422] px-[.2rem] pt-[.2rem] rounded-[.2rem] bg-[#242422] font-serif"
+              className="text-[.1rem] text-[#FF009DFF] px-[.2rem] pt-[.2rem] rounded-[.2rem] bg-[#242422] font-serif"
             >
               <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
