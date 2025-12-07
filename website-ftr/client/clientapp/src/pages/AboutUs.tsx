@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import OfficerBrick from '../Stylesheets/OfficerBrick';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient"; // <-- make sure path is correct
+import OfficerBrick from "../Stylesheets/OfficerBrick";
 
 interface Officer {
   id: number;
-  fullName: string;
+  full_name: string;
   title: string;
   email?: string;
   location?: string;
@@ -13,24 +13,27 @@ interface Officer {
   instagram?: string;
   x_social?: string;
   facebook?: string;
-  photo?: string; // base64 string (optional)
+  photo_url?: string;
 }
 
-const AboutUs : React.FC = () => {
+const AboutUs: React.FC = () => {
   const [officers, setOfficers] = useState<Officer[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOfficers = async () => {
-      try {
-        // after development youve gotta replace this with an api endpoint to the backend
-        const response = await axios.get<Officer[]>('http://localhost:5173/officers');
-        setOfficers(response.data);
-      } catch (error) {
-        console.error('Error fetching officers:', error);
-      } finally {
-        setLoading(false);
+      const { data, error } = await supabase
+        .from("officers")
+        .select("*")
+        .order("id", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching officers:", error);
+      } else {
+        setOfficers(data || []);
       }
+
+      setLoading(false);
     };
 
     fetchOfficers();
@@ -42,11 +45,12 @@ const AboutUs : React.FC = () => {
     <div>
       <title>About Us</title>
       <h1>About Us</h1>
+
       <div className="officer-container">
         {officers.map((officer) => (
           <OfficerBrick
             key={officer.id}
-            officerName={officer.fullName}
+            officerName={officer.full_name}
             officerTitle={officer.title}
             officerEmail={officer.email}
             officerYoutube={officer.youtube}
@@ -54,7 +58,7 @@ const AboutUs : React.FC = () => {
             officerInstagram={officer.instagram}
             officerTwitter={officer.x_social}
             officerFacebook={officer.facebook}
-            pictureLink={`data:image/jpeg;base64,${officer.photo}`}
+            pictureLink={officer.photo_url || ""} // <= now uses real URL from DB
           />
         ))}
       </div>

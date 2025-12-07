@@ -1,32 +1,56 @@
 import React, { useEffect, useState } from "react";
 import RenderContent from "../Components/RenderContent";
 import { useParams } from "react-router-dom";
+import { supabase } from "../lib/supabaseClient";
 import type { JSONContent } from "@tiptap/react";
 
 interface ArticleProps {
-  id: number,
-  title: string,
-  author: string,
-  content?: JSONContent,
-  displayimg: string,
-};
+  id: number;
+  title: string;
+  author: string;
+  content?: JSONContent;
+  displayimg?: string;
+}
 
-const Article : React.FC<ArticleProps> = () => {
+const Article: React.FC = () => {
   const { id } = useParams();
   const [article, setArticle] = useState<ArticleProps | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArticle = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/api/articles/${id}`);
-        const data: ArticleProps = await response.json();
-        setArticle(data);
-      } catch (error) {
+      // 1. Fetch article + join to profiles to get author username
+      const { data, error } = await supabase
+        .from("articles")
+        .select(`
+          id,
+          title,
+          content,
+          image_url,
+          profiles!articles_author_id_fkey (
+            username
+          )
+        `)
+        .eq("id", Number(id))
+        .single();
+
+      if (error) {
         console.error("Error fetching article:", error);
-      } finally {
         setLoading(false);
+        return;
       }
+
+      if (data) {
+        setArticle({
+          id: data.id,
+          title: data.title,
+          author: data.profiles?.[0]?.username ?? "Unknown",
+          content: data.content,
+          displayimg: data.image_url,
+        });
+      }
+
+      setLoading(false);
     };
 
     fetchArticle();
@@ -48,9 +72,11 @@ const Article : React.FC<ArticleProps> = () => {
         <div className="titlecont">
           <h3>{article.title}</h3>
         </div>
+
         <p className="titlecont" style={{ paddingBottom: "1.5rem" }}>
           <b>Author:</b> {article.author}
         </p>
+
         <div className="article-content">
           <RenderContent content={article.content} />
         </div>
