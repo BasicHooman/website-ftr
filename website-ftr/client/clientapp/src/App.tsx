@@ -9,6 +9,7 @@ import Layout from './Components/Layout';
 import CategoryDisplay from './Components/CategoryDisplay';
 import { TestingStyles } from './pages/TestingStyles';
 import OfficerPage from './pages/OfficerPage';
+import AdminDashboard from './pages/Admindashboard.tsx';
 
 
 
@@ -19,14 +20,15 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="create" element={<Createart />} />
         {/* Oh I'm sure these temporary attributes are a problem */}
-        <Route path="articles/:id" element={<Article id={0} title={''} author={''} displayimg={''} />} />
-        <Route path="login" element={<Article id={0} title={''} author={''} displayimg={''} />} />
-        <Route path="donate" element={<Article id={0} title={''} author={''} displayimg={''} />} />
+        <Route path="articles/:id" element={<Article/>} />
+        <Route path="login" element={<Article/>} />
+        <Route path="donate" element={<Article/>} />
         <Route path="about-us" element={<AboutUs />} />
         <Route path="officers" element={<OfficerPage />} />
         <Route path="debug" element={<DebugPage />} /> 
         <Route path="category/:categoryName" element={<CategoryDisplay />} />
         <Route path="testing-styles" element={<TestingStyles fun={''} />} />
+        <Route path="admin" element={<AdminDashboard />} />
       </Route>
     </Routes>
   );

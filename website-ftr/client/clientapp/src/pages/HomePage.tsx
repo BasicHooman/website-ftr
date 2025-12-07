@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabaseClient";
 
-// this really shouldnt be here LOL
-// like no. absoltely not.
-// really should be declared int he article file? i would surely hope
 type Article = {
-  id: number; // or `number` if your backend returns a number
+  id: number;
   title: string;
   author: string;
   displayimg: string;
-  summary:string;
+  summary: string;
 };
 
-const HomePage : React.FC = () => {
+const PAGE_SIZE = 10;
+
+const HomePage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,17 +20,56 @@ const HomePage : React.FC = () => {
   const nav = useNavigate();
 
   const fetchArticles = async (page: number) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/articles?page=${page}`);
-      const data = await response.json();
-      setArticles(data.articles);
-      setTotalPages(data.totalPages);
-      setCurrentPage(data.currentPage);
-    } catch (error) {
+    setLoading(true);
+
+    const start = (page - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE - 1;
+
+    // Step 1: Fetch paginated articles + author username
+    const { data, error } = await supabase
+      .from("articles")
+      .select(
+        `
+        id,
+        title,
+        summary,
+        image_url,
+        profiles!articles_author_id_fkey (
+          username
+        )
+      `
+      )
+      .order("created_at", { ascending: false })
+      .range(start, end);
+
+    if (error) {
       console.error("Error fetching articles:", error);
-    } finally {
       setLoading(false);
+      return;
     }
+
+    // Step 2: Transform result for UI
+    const formatted = data.map((a) => ({
+      id: a.id,
+      title: a.title,
+      summary: a.summary,
+      displayimg: a.image_url,
+      author: a.profiles?.[0]?.username ?? "Unknown",
+    }));
+
+    setArticles(formatted);
+
+    // Step 3: Count total articles for pagination
+    const { count } = await supabase
+      .from("articles")
+      .select("*", { count: "exact", head: true });
+
+    if (count) {
+      setTotalPages(Math.ceil(count / PAGE_SIZE));
+    }
+
+    setCurrentPage(page);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -38,6 +77,7 @@ const HomePage : React.FC = () => {
   }, []);
 
   const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
     fetchArticles(newPage);
   };
 
@@ -58,17 +98,12 @@ const HomePage : React.FC = () => {
                 <div
                   key={article.id}
                   className="articleitem p-2"
-                  onClick={() => {
-                    nav(`/articles/${article.id}`);
-                  }}
+                  onClick={() => nav(`/articles/${article.id}`)}
                 >
-                  <div className="displaycont " style={{ width: "350px"}}>
+                  <div className="displaycont " style={{ width: "350px" }}>
                     <h3>{article.title}</h3>
                   </div>
-                  <p
-                    className="displaycont"
-                    style={{width: "350px" }}
-                  >
+                  <p className="displaycont" style={{ width: "350px" }}>
                     <b>Author:</b> {article.author}
                   </p>
                   <p
@@ -77,7 +112,6 @@ const HomePage : React.FC = () => {
                   >
                     {article.summary}
                   </p>
-                  
                 </div>
                 <div className="my-3">
                   <img
@@ -92,7 +126,7 @@ const HomePage : React.FC = () => {
         </div>
 
         <div className="left">
-          <div className="">
+          <div>
             <h2 style={{ fontSize: "2.5rem" }}>Recent Uploads</h2>
           </div>
           <div className="d-flex flex-wrap mb-5" style={{ width: "500px" }}>
@@ -101,9 +135,7 @@ const HomePage : React.FC = () => {
                 <div
                   key={article.id}
                   className="articleitem p-2"
-                  onClick={() => {
-                    nav(`/articles/${article.id}`);
-                  }}
+                  onClick={() => nav(`/articles/${article.id}`)}
                 >
                   <div className="my-2">
                     <img
@@ -112,22 +144,22 @@ const HomePage : React.FC = () => {
                       height="308.4375"
                     />
                   </div>
-                  <div className="displaycont ">
+                  <div className="displaycont">
                     <h3>{article.title}</h3>
                   </div>
                   <p className="displaycont" style={{ width: "350px" }}>
                     <b>Author:</b> {article.author}
                   </p>
                   <p className="displaycont" style={{ width: "350px" }}>
-                  {article.summary}
+                    {article.summary}
                   </p>
-                  
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
+
       <div className="d-flex justify-content-center">
         <button
           className="btn btn-primary mx-1"
@@ -136,6 +168,7 @@ const HomePage : React.FC = () => {
         >
           Previous
         </button>
+
         <button
           className="btn btn-primary mx-1"
           onClick={() => handlePageChange(currentPage + 1)}
