@@ -55,19 +55,20 @@ const Createart = () => {
       Link.configure({ openOnClick: false }),
       Image.configure({ allowBase64: true }),
       FileHandler.configure({
-        onDrop: async (_editor: Editor, files: File[], _pos: number) => {
+        onDrop: async (_editor: Editor, files: File[]) => {
           const file = files[0];
           if(!file) return;
           const url = await uploadImageToSupabase(file);
           
           setDisplayimg(url || "");
         },
-
-        onPaste: async (_editor: Editor, files: File[], _html: string) => {
-          const file = files[0];
-          if(!file) return;
-          const url = await uploadImageToSupabase(file);
-          setDisplayimg(url || "");
+        onPaste(_editor: Editor, files:File[]): void {
+          void (async () => {
+            const file = files[0];
+            if (!file) return;
+            const url = await uploadImageToSupabase(file);
+            setDisplayimg(url || "");
+          })();
         },
         allowedMimeTypes: ["image/jpeg", "image/png", "image/gif", "image/webp"],
       }),
