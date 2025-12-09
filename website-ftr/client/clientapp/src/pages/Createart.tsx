@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Strike from "@tiptap/extension-strike";
@@ -11,7 +11,6 @@ import LinkIcon from "@mui/icons-material/Link";
 import ImageIcon from "@mui/icons-material/Image";
 import LinkOffIcon from "@mui/icons-material/LinkOff"; // or FontAwesome icon for "unlink"
 import { supabase } from "../lib/supabaseClient";
-import BubbleMenuExtension from "@tiptap/extension-bubble-menu";
 
 
 const Createart = () => {
@@ -56,17 +55,21 @@ const Createart = () => {
       Link.configure({ openOnClick: false }),
       Image.configure({ allowBase64: true }),
       FileHandler.configure({
-        onDrop: async (editor, files, pos) => {
+        onDrop: async (_editor: Editor, files: File[], _pos: number) => {
           const file = files[0];
+          if(!file) return;
+          const url = await uploadImageToSupabase(file);
+          
+          setDisplayimg(url || "");
+        },
+
+        onPaste: async (_editor: Editor, files: File[], _html: string) => {
+          const file = files[0];
+          if(!file) return;
           const url = await uploadImageToSupabase(file);
           setDisplayimg(url || "");
         },
-        onPaste: async (editor, files) => {
-          const file = files[0];
-          const url = await uploadImageToSupabase(file);
-          setDisplayimg(url || "");
-        },
-        allowedMimeTypes: ["image/jpeg", "image/png", "image/gif"],
+        allowedMimeTypes: ["image/jpeg", "image/png", "image/gif", "image/webp"],
       }),
     ],
     content: "<p>Hello World!</p>",
