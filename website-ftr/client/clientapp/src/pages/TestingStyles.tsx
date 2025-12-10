@@ -1,4 +1,3 @@
-import ArticleBox from "../Stylesheets/ArticleBox.tsx";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
@@ -83,14 +82,6 @@ export const TestingStyles: React.FC<TestingStyles> = () => {
         </div>
         {message && <p className="mt-3 text-center">{message}</p>}
       </div>
-
-      <ArticleBox
-        articleName={"GAY LOSER"}
-        subtitle={"lesbian"}
-        authorName={"moke wob"}
-        articleText={"the fitness gram pacer test is a "}
-        articleDate={"5/7/2024"}
-      />
 
       <Link className="nav-link" to="/create">
         Create Article
