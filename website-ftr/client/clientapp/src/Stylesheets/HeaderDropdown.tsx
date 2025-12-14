@@ -2,10 +2,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import CoolDropdown from "./CoolDropdown";
-import front_logo from '../assets/big-ftr-logo.png';
+//import front_logo from '../assets/big-ftr-logo.png';
 import { supabase } from "../lib/supabaseClient";
 import type {User, Session} from "@supabase/supabase-js";
-
+import FTRLogoButton from "./FTRLogoButton";
 interface HeaderDropdownProps {
   selectedValue?: string;
 }
@@ -103,11 +103,11 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
             </div>
           </div>
         </div>
-
-        <div className="my-2 text-center" style={{ backgroundColor: "#f5f1e9" }}>
-          <img src={front_logo} width="306" height="100" />
-        </div>
         
+        <div className="my-2 text-center" style={{ backgroundColor: "#f5f1e9" }}>
+          <FTRLogoButton />
+        </div>
+
         <div>
           <nav className="navbar navbar-expand-lg navbar-bottom-shadow">
             <div className="container-fluid">
