@@ -25,7 +25,6 @@ const HomePage: React.FC = () => {
     const start = (page - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE - 1;
 
-    // Step 1: Fetch paginated articles + author username
     const { data, error } = await supabase
       .from("articles")
       .select(
@@ -48,7 +47,6 @@ const HomePage: React.FC = () => {
       return;
     }
 
-    // Step 2: Transform result for UI
     const formatted = data.map((a) => ({
       id: a.id,
       title: a.title,
@@ -59,7 +57,6 @@ const HomePage: React.FC = () => {
 
     setArticles(formatted);
 
-    // Step 3: Count total articles for pagination
     const { count } = await supabase
       .from("articles")
       .select("*", { count: "exact", head: true });
@@ -88,36 +85,45 @@ const HomePage: React.FC = () => {
       <title>For The Record</title>
 
       <div className="d-flex justify-content-center">
+        {/* TRENDING */}
         <div>
           <div className="left1">
-            <h2 style={{ fontSize: "2.5rem" }}>Trending</h2>
+            <h2 style={{ fontSize: "2.1rem" }}>Trending</h2>
           </div>
-          <div className="d-flex flex-wrap mb-5" style={{ width: "830px" }}>
+
+          <div className="d-flex flex-wrap mb-5" style={{ width: "560px" }}>
             {articles.map((article) => (
-              <div className="d-flex flex-wrap mx-auto news margin-top mx-5">
+              <div
+                key={article.id}
+                className="d-flex mx-auto news margin-top mx-5"
+                style={{ flexWrap: "nowrap", alignItems: "flex-start" }}
+              >
                 <div
-                  key={article.id}
                   className="articleitem p-2"
                   onClick={() => nav(`/articles/${article.id}`)}
                 >
-                  <div className="displaycont " style={{ width: "350px" }}>
+                  <div className="displaycont" style={{ width: "235px" }}>
                     <h3>{article.title}</h3>
                   </div>
-                  <p className="displaycont" style={{ width: "350px" }}>
+
+                  <p className="displaycont" style={{ width: "235px" }}>
                     <b>Author:</b> {article.author}
                   </p>
+
                   <p
                     className="displaycont"
-                    style={{ paddingBottom: "1.5rem", width: "330px" }}
+                    style={{ paddingBottom: "1.2rem", width: "220px" }}
                   >
                     {article.summary}
                   </p>
                 </div>
+
                 <div className="my-3">
                   <img
                     src={article.displayimg}
-                    width="462.675"
-                    height="308.4375"
+                    width="310"
+                    height="207"
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
               </div>
@@ -125,32 +131,40 @@ const HomePage: React.FC = () => {
           </div>
         </div>
 
+        {/* RECENT UPLOADS */}
         <div className="left">
           <div>
-            <h2 style={{ fontSize: "2.5rem" }}>Recent Uploads</h2>
+            <h2 style={{ fontSize: "2.1rem" }}>Recent Uploads</h2>
           </div>
-          <div className="d-flex flex-wrap mb-5" style={{ width: "500px" }}>
+
+          <div className="d-flex flex-wrap mb-5" style={{ width: "340px" }}>
             {articles.map((article) => (
-              <div className="d-flex flex-wrap mx-auto news margin-top mx-5">
+              <div
+                key={article.id}
+                className="d-flex flex-wrap mx-auto news margin-top mx-5"
+              >
                 <div
-                  key={article.id}
                   className="articleitem p-2"
                   onClick={() => nav(`/articles/${article.id}`)}
                 >
                   <div className="my-2">
                     <img
                       src={article.displayimg}
-                      width="462.675"
-                      height="308.4375"
+                      width="310"
+                      height="207"
+                      style={{ objectFit: "cover" }}
                     />
                   </div>
+
                   <div className="displaycont">
                     <h3>{article.title}</h3>
                   </div>
-                  <p className="displaycont" style={{ width: "350px" }}>
+
+                  <p className="displaycont" style={{ width: "235px" }}>
                     <b>Author:</b> {article.author}
                   </p>
-                  <p className="displaycont" style={{ width: "350px" }}>
+
+                  <p className="displaycont" style={{ width: "235px" }}>
                     {article.summary}
                   </p>
                 </div>
@@ -160,6 +174,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
+      {/* PAGINATION */}
       <div className="d-flex justify-content-center">
         <button
           className="btn btn-primary mx-1"
