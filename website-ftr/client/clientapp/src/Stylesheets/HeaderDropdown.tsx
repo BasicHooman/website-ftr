@@ -1,11 +1,11 @@
-import HomeIcon from "@mui/icons-material/Home";
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CoolDropdown from "./CoolDropdown";
 //import front_logo from '../assets/big-ftr-logo.png';
 import { supabase } from "../lib/supabaseClient";
 import type {User, Session} from "@supabase/supabase-js";
 import FTRLogoButton from "./FTRLogoButton";
+import GoogleAuthButton from "./GoogleAuthButton";
 interface HeaderDropdownProps {
   selectedValue?: string;
 }
@@ -74,35 +74,6 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
 
     return (
       <div ref={ref} className="fixed top-0 w-full z-50 bg-white">
-        <div className="d-flex justify-content-center">
-          <div className="d-flex battle">
-            <div className="mx-2">
-              {user ? (
-                <div className="d-flex align-items-center">
-                  <span className="mx-2">
-                    Welcome, {user.user_metadata.full_name?.split(" ")[0] ?? "User"}
-                  </span>
-                  <button onClick={handleLogout} className="btn btn-primary">
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <button className="btn btn-primary" onClick={handleLogin}>
-                  Sign in with Google
-                </button>
-              )}
-            </div>
-
-            <div className="mx-2">
-              <Link to="/" className="btn clear">
-                <HomeIcon />
-              </Link>
-              <Link to="/testing-styles" className="btn clear">
-                Format Testing
-              </Link>
-            </div>
-          </div>
-        </div>
         
         <div className="my-2 text-center" style={{ backgroundColor: "#f5f1e9" }}>
           <FTRLogoButton />
@@ -125,6 +96,11 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
 
               <div className="navbar navbar-collapse justify-center items-center" id="navbarNav">
                 <ul className="navbar-nav mx-auto justify-center">
+                  <GoogleAuthButton
+                    user={user}
+                    onLogout={handleLogout}
+                    onLogin={handleLogin} 
+                  />
                   <CoolDropdown
                     dropdownLabelTitle="Categories"
                     options={categoryDropdownOptions}
