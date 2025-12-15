@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import FTRButton from "../Stylesheets/FTRButton.tsx";
 
 interface TestingStyles {
   fun: string;
@@ -86,6 +87,12 @@ export const TestingStyles: React.FC<TestingStyles> = () => {
       <Link className="nav-link" to="/create">
         Create Article
       </Link>
+
+      <FTRButton 
+        buttonText="Test"
+        onClick={() => alert("Tset")}
+        disabled={false}
+      />
     </div>
   );
 };
