@@ -176,7 +176,7 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* PAGINATION */}
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center mx-2">
         <FTRButton
           buttonText = "Previous"
           onClick={() => handlePageChange(currentPage - 1)}
