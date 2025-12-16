@@ -22,7 +22,7 @@ const GoogleAuthButton = ({
       user.user_metadata?.full_name?.split(" ")[0] ?? "User";
 
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }} className="mx-2">
         <span>Welcome, {firstName}</span>
         <button
           onClick={onLogout}
@@ -33,6 +33,7 @@ const GoogleAuthButton = ({
             backgroundColor: "#ffffff",
             cursor: "pointer",
           }}
+          className="mx-2"
         >
           Logout
         </button>
@@ -63,6 +64,7 @@ const GoogleAuthButton = ({
       onMouseOut={(e) =>
         (e.currentTarget.style.backgroundColor = "#ffffff")
       }
+      className="me-4"
     >
       <img
         src={googleLogo}

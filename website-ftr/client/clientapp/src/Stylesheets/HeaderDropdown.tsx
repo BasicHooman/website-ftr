@@ -93,8 +93,8 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
                 <span className="navbar-toggler-icon"></span>
               </button>
 
-              <div className="navbar navbar-collapse justify-center items-center" id="navbarNav">
-                <ul className="navbar-nav mx-auto justify-center">
+              <div className="navbar navbar-collapse justify-center items-center mx-2" id="navbarNav">
+                <ul className="navbar-nav mx-auto justify-center mx-2">
                   <GoogleAuthButton
                     user={user}
                     onLogout={handleLogout}
@@ -115,7 +115,7 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
                     options={aboutUsDowndownOptions}
                     selectedValue={selectedValue}
                     onChange={handleDropNavigate(aboutUsDowndownOptions)}
-                    style={{width: "120%"}}
+                    style={{width: "100%"}}
                   />
                 </ul>
               </div>
