@@ -1,4 +1,5 @@
 import type { ChangeEvent } from "react";
+import type React from "react";
 
 interface CoolDropdownProps {
   textFormat?: string;
@@ -8,9 +9,10 @@ interface CoolDropdownProps {
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   selectedValue?: string;
   dropdownLabelTitle: string;
+  style?: React.CSSProperties;
 }
 
-const CoolDropdown = ({ options, className, onChange, selectedValue, dropdownLabelTitle }: CoolDropdownProps) => {
+const CoolDropdown = ({ options, className, onChange, selectedValue, dropdownLabelTitle, style }: CoolDropdownProps) => {
   return (
     <div className={`
       inline-flex
@@ -35,6 +37,8 @@ const CoolDropdown = ({ options, className, onChange, selectedValue, dropdownLab
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'right 0.5rem center',
           backgroundSize: '1.5em 1.5em',
+          fontFamily: "Times New Roman",
+          ...style
         }}
       >
         <option value="" disabled hidden>{dropdownLabelTitle}</option>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CoolDropdown from "./CoolDropdown";
-//import front_logo from '../assets/big-ftr-logo.png';
 import { supabase } from "../lib/supabaseClient";
 import type {User, Session} from "@supabase/supabase-js";
 import FTRLogoButton from "./FTRLogoButton";
@@ -100,18 +99,23 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
                     user={user}
                     onLogout={handleLogout}
                     onLogin={handleLogin} 
+                    //I would like to add a feature boolean where it determines if the user is an admin and if yes it shows the create article button
+                    
                   />
                   <CoolDropdown
                     dropdownLabelTitle="Categories"
                     options={categoryDropdownOptions}
                     selectedValue={selectedValue}
                     onChange={handleDropNavigate(categoryDropdownOptions)}
+                    style={{width: "80%"}}
+                    
                   />
                   <CoolDropdown
                     dropdownLabelTitle="About Us"
                     options={aboutUsDowndownOptions}
                     selectedValue={selectedValue}
                     onChange={handleDropNavigate(aboutUsDowndownOptions)}
+                    style={{width: "120%"}}
                   />
                 </ul>
               </div>
