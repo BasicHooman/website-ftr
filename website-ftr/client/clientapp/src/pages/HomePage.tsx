@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
+import FTRButton from "../Stylesheets/FTRButton.tsx";
 
 type Article = {
   id: number;
@@ -176,21 +177,20 @@ const HomePage: React.FC = () => {
 
       {/* PAGINATION */}
       <div className="d-flex justify-content-center">
-        <button
-          className="btn btn-primary mx-1"
+        <FTRButton
+          buttonText = "Previous"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-        >
-          Previous
-        </button>
+          className="flex-fill"
+        />
 
-        <button
-          className="btn btn-primary mx-1"
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
+        <FTRButton
+          buttonText = "Next"
+          onClick = {() => handlePageChange(currentPage + 1)}
+          disabled = {currentPage === totalPages}
+          className="flex-fill"
+          style= {{width: "115%"}}
+        />
       </div>
     </>
   );

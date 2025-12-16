@@ -1,15 +1,18 @@
-
+import type React from "react";
 
 interface FTRButtonProps {
     buttonText: string;
     onClick: () => void;
     disabled?: boolean;
+    className?: string;
+    style?: React.CSSProperties;
+
 };
 
-const FTRButton = ({buttonText, onClick, disabled} : FTRButtonProps) => {
+const FTRButton = ({buttonText, onClick, disabled, className, style} : FTRButtonProps) => {
     return (
         <div>
-            <button onClick={onClick} disabled={disabled} className ="front-bold border-[#FF00E6FF] rounded-lg shadow-md border-4 flex items-center justify-center">
+            <button style={{ fontFamily: "Times New Roman", ...style}} onClick={onClick} disabled={disabled} className ={`thumbnail botton mx-2 ${className}` }>
                 {buttonText}
             </button>
         </div>
