@@ -1,11 +1,20 @@
 import googleLogo from "../assets/google-logo.svg";
+import FTRButton from "./FTRButton";
+
+interface UserProfile {
+  fullName: string;
+  lastName: string;
+  isAdmin: boolean;
+  isEditor: boolean;
+  isAuthor: boolean;
+}
 
 interface User {
   user_metadata?: {
     full_name?: string;
   };
+  profile?: UserProfile;
 }
-
 interface GoogleAuthButtonProps {
   user: User | null;
   onLogin: () => void;
@@ -21,22 +30,31 @@ const GoogleAuthButton = ({
     const firstName =
       user.user_metadata?.full_name?.split(" ")[0] ?? "User";
 
+    const hasRole = (
+      user.profile?.isAdmin ||
+      user.profile?.isEditor ||
+      user.profile?.isAuthor);
+
+    const handleRoleAction = () => {
+      alert("test");
+    };
+
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }} className="mx-2">
-        <span>Welcome, {firstName}</span>
-        <button
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", fontFamily: "Times New Roman"}} className="mx-2">
+        <span>Welcome, {firstName}!</span>
+        {hasRole && (
+          <FTRButton
+            onClick={handleRoleAction}
+            buttonText="RoleAction"
+            className="mx-2"
+          />
+        )}
+
+        <FTRButton
           onClick={onLogout}
-          style={{
-            padding: "8px 14px",
-            borderRadius: "4px",
-            border: "1px solid #dadce0",
-            backgroundColor: "#ffffff",
-            cursor: "pointer",
-          }}
+          buttonText="Logout"
           className="mx-2"
-        >
-          Logout
-        </button>
+        />
       </div>
     );
   }
