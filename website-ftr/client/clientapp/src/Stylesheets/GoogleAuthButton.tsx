@@ -1,5 +1,6 @@
 import googleLogo from "../assets/google-logo.svg";
 import FTRButton from "./FTRButton";
+import {useNavigate} from "react-router-dom";
 
 interface User {
   user_metadata?: {
@@ -25,25 +26,39 @@ const GoogleAuthButton = ({
   onLogin,
   onLogout,
 }: GoogleAuthButtonProps) => {
+  
+  const navigate = useNavigate();
+
   if (user) {
     const roles = user.app_metadata?.roles;
+     
+    const firstName = user.user_metadata?.full_name?.split(" ")[0] ?? "User";
 
-    const firstName =
-      user.user_metadata?.full_name?.split(" ")[0] ?? "User";
-
-    const hasRole = roles?.admin || roles?.editor || roles?.author;
-
-    const handleRoleAction = () => {
-      alert("test");
-    };
+    const isAdmin = roles?.admin;
+    const isEditor = roles?.editor;
+    const isAuthor = roles?.author;
 
     return (
       <div style={{ display: "flex", alignItems: "center", gap: "12px", fontFamily: "Times New Roman"}} className="mx-2">
         <span>Welcome, {firstName}!</span>
-        {hasRole && (
+        {isAdmin && (
+          <>
+            <FTRButton
+              onClick={() => navigate("/create")}
+              buttonText="Add Article"
+              className="mx-2"
+            />
+            <FTRButton
+              onClick={() => navigate("/testing-styles")}
+              buttonText="Debug"
+              className="mx-2"
+            />
+          </>
+        )}
+        {((isEditor || isAuthor) && !isAdmin) && (
           <FTRButton
-            onClick={handleRoleAction}
-            buttonText="Role Action"
+            onClick={() => navigate("/create")}
+            buttonText="Add Article"
             className="mx-2"
           />
         )}
