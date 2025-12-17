@@ -1,20 +1,19 @@
 import googleLogo from "../assets/google-logo.svg";
 import FTRButton from "./FTRButton";
 
-interface UserProfile {
-  fullName: string;
-  lastName: string;
-  isAdmin: boolean;
-  isEditor: boolean;
-  isAuthor: boolean;
-}
-
 interface User {
   user_metadata?: {
     full_name?: string;
   };
-  profile?: UserProfile;
+  app_metadata?: {
+    roles?:{
+      admin: boolean;
+      editor: boolean;
+      author: boolean;
+    };
+  };
 }
+
 interface GoogleAuthButtonProps {
   user: User | null;
   onLogin: () => void;
@@ -27,13 +26,12 @@ const GoogleAuthButton = ({
   onLogout,
 }: GoogleAuthButtonProps) => {
   if (user) {
+    const roles = user.app_metadata?.roles;
+
     const firstName =
       user.user_metadata?.full_name?.split(" ")[0] ?? "User";
 
-    const hasRole = (
-      user.profile?.isAdmin ||
-      user.profile?.isEditor ||
-      user.profile?.isAuthor);
+    const hasRole = roles?.admin || roles?.editor || roles?.author;
 
     const handleRoleAction = () => {
       alert("test");
@@ -45,7 +43,7 @@ const GoogleAuthButton = ({
         {hasRole && (
           <FTRButton
             onClick={handleRoleAction}
-            buttonText="RoleAction"
+            buttonText="Role Action"
             className="mx-2"
           />
         )}
