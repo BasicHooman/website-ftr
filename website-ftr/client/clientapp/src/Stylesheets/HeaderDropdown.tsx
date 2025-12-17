@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CoolDropdown from "./CoolDropdown";
 import { supabase } from "../lib/supabaseClient";
-import type {User, Session} from "@supabase/supabase-js";
+import type { Session} from "@supabase/supabase-js";
 import FTRLogoButton from "./FTRLogoButton";
 import GoogleAuthButton from "./GoogleAuthButton";
+
+import type {AppUser } from "../types";
 interface HeaderDropdownProps {
   selectedValue?: string;
 }
@@ -12,7 +14,7 @@ interface HeaderDropdownProps {
 const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
   ({ selectedValue }, ref) => {
     const navigate = useNavigate();
-    const [user, setUser] = useState<User | null >(null);
+    const [user, setUser] = useState<AppUser | null >(null);
 
     // Fetch session
     useEffect(() => {
@@ -98,9 +100,7 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
                   <GoogleAuthButton
                     user={user}
                     onLogout={handleLogout}
-                    onLogin={handleLogin} 
-                    //I would like to add a feature boolean where it determines if the user is an admin and if yes it shows the create article button
-                    
+                    onLogin={handleLogin}                     
                   />
                   <CoolDropdown
                     dropdownLabelTitle="Categories"
