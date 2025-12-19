@@ -186,6 +186,9 @@ const Createart = () => {
             const file = e.target.files?.[0];
             if (!file) return;
             setThumbnailName(file.name); // 👈 store file name
+            // did he actually just vibecode the whole thing im gonna lose it
+            // emojis in code comments are the em dashes of vibe coding
+            // whatever watch me recode the entire thing
             const url = await uploadImageToSupabase(file);
             setDisplayimg(url || "");
           }}

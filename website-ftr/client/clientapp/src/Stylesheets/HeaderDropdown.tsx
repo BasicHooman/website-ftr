@@ -56,11 +56,11 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
     };
 
     const categoryDropdownOptions = [
-      { value: "news", label: "News and Features", path: "/category/news-and-features" },
-      { value: "opinion", label: "Opinion and Editorial", path: "/category/opinion-and-editorial" },
-      { value: "resources", label: "Resources and Education", path: "/category/resources-and-education" },
-      { value: "action", label: "Action and Advocacy", path: "/category/action-and-advocacy" },
-      { value: "global", label: "Global Voices", path: "/category/global-voices" },
+      { value: "news", label: "News and Features", path: "/category/news" },
+      { value: "opinion", label: "Opinion and Editorial", path: "/category/opinion" },
+      { value: "resources", label: "Resources and Education", path: "/category/resources" },
+      { value: "action", label: "Action and Advocacy", path: "/category/action" },
+      { value: "global", label: "Global Voices", path: "/category/global" },
     ];
 
     const aboutUsDowndownOptions = [
