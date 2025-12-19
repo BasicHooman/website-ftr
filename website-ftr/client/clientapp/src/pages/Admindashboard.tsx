@@ -1,3 +1,6 @@
+//file never used in the current version but is kept for the sake of future
+//implementation/reference
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";

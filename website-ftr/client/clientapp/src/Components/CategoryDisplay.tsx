@@ -70,9 +70,16 @@ const CategoryDisplay: React.FC = () => {
     fetchArticles(newPage);
   };
 
+  const categoryLabels: { [key: string]: string } = {
+    news: "News and Features",
+    opinion: "Opinion and Editorial",
+    resources: "Resources and Education",
+    action: "Action and Advocacy",
+    global: "Global Voices",
+  };
   return (
     <div className="container">
-      <h2>{categoryName ? categoryName.replace(/-/g, " ") : "Articles"}</h2>
+      <h2>{categoryName ? categoryLabels[categoryName] || categoryName : "Articles"}</h2>
 
       <div className="row">
         {articles.map((article) => (
