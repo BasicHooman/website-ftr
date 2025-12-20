@@ -29,7 +29,7 @@ function App() {
         <Route path="category/:categoryName" element={<CategoryDisplay />} />
         <Route path="testing-styles" element={<TestingStyles fun={''} />} />
         <Route path="admin" element={<AdminDashboard />} />
-        <Route path="democreate" element={<CreateArticle />} />
+        <Route path="create-article" element={<CreateArticle />} />
       </Route>
     </Routes>
   );

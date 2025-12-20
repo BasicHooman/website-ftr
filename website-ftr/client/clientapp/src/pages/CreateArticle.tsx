@@ -1,22 +1,32 @@
 import { useState } from "react";
 import {supabase} from "../lib/supabaseClient";
-import { useEditor, Editor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Strike from "@tiptap/extension-strike";
-import Heading from "@tiptap/extension-heading";
-import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
-import FileHandler from "@tiptap/extension-file-handler";
-import ImageIcon from "@mui/icons-material/Image";
-import FTRButton from "../Stylesheets/FTRButton";
-import TextInputWrapped from "../Stylesheets/TextInputWrapped";
+import type {JSONContent} from "@tiptap/react";
 
+import ImageIcon from "@mui/icons-material/Image";
+
+import FTRButton from "../Stylesheets/FTRButton";
+import TextEditor from "../Components/TextEditor";
+import FTRInputSmall from "../Stylesheets/FTRInputSmall";
+import CoolDropdown from "../Stylesheets/CoolDropdown";
 
 const CreateArticle = () => {
 
+    const [title, setTitle] = useState("");
+    const [genre, setGenre] = useState("");
+
+    const [summary, setSummary] = useState<JSONContent | null>(null);
+    const [content, setContent] = useState<JSONContent | null>(null);
+    
     const [thumbnailName, setThumbnailName] = useState("");
     const [displayimg, setDisplayimg] = useState("");
 
+
+    const TABLE_NAME = "articles";
+    const CONTENT_COLUMN = "content";
+    const SUMMARY_COLUMN = "summary";
+
+
+    {/*
     const editor = useEditor ({
         extensions: [
             StarterKit,
@@ -44,7 +54,7 @@ const CreateArticle = () => {
         ],
         content: "<p>Hello World!</p>",
     });
-
+    
     const onImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file || !editor) return;
@@ -58,6 +68,7 @@ const CreateArticle = () => {
         const url = await uploadImageToSupabase(file);
         editor.chain().focus().updateAttributes("image", { src: url }).run();
     };
+*/}
 
     const uploadImageToSupabase = async (file: File): Promise<string> => {
         const fileExt = file.name.split(".'").pop();
@@ -72,19 +83,19 @@ const CreateArticle = () => {
                 upsert: false,
             });
 
-            if (error) {
-                console.error("Image Upload Failed: ", error);
-                throw error;
-            }
-            const {data} = supabase.storage 
-                .from("article-images")
-                .getPublicUrl(filePath);
+        if (error) {
+            console.error("Image Upload Failed: ", error);
+            throw error;
+        }
+        const {data} = supabase.storage 
+            .from("article-images")
+            .getPublicUrl(filePath);
 
-            return data.publicUrl;
+        return data.publicUrl;
     }
 
     const handleSubmit = async () => {
-        if (!editor) return;
+        //if (!editor) return;
 
         const {
             data: {user}
@@ -107,22 +118,17 @@ const CreateArticle = () => {
 
         const author_id = user.id;
 
-        const contentJSON = editor.getJSON();
+        //const contentJSON = editor.getJSON();
 
-        const {error} = await supabase 
-            .from("articles")
-            .insert([
-                {
-                    title,
-                    author_id,
-                    content: contentJSON,
-                    image_url: displayimg.
-                    genre,
-                    summary,
-                },
-            ])
-            .select()
-            .single();
+        const {error} = await supabase.from(TABLE_NAME).insert(
+            {
+                title,
+                author_id,
+                [CONTENT_COLUMN]: content,
+                image_url: displayimg,
+                genre: genre,
+                [SUMMARY_COLUMN]: summary,
+            });
         if (error) {
             alert("Error submitting article.")
             console.error(error);
@@ -132,10 +138,6 @@ const CreateArticle = () => {
         }
     };
 
-    if(!editor) {
-        return null;
-    }
-
     return (
         <>
             <title>Create Article</title>
@@ -144,8 +146,28 @@ const CreateArticle = () => {
                     <h1>Create Article</h1>
 
                     <h2>INSERT TITLE</h2>
+                    <FTRInputSmall
+                        placeholder="Article Title"
+                        inputValue={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+
                     <h3>By: INSERT AUTHOR NAME</h3>
 
+                    <CoolDropdown
+                        selectedValue={genre}
+                        options = {[
+                            {value: "news", label: "News and Features"},
+                            {value: "opinion", label: "Opinion and Editorial"},
+                            {value: "resources", label: "Resources and Education"},
+                            {value: "action", label: "Action and Advocacy"},
+                            {value: "global", label: "Global Voices"}
+                        ]}
+                        onChange={(e) => setGenre(e.target.value)}
+                        dropdownLabelTitle="Select Genre"
+                    />
+
+                    {/* image upload shenanagins */}
                     <div className="text-start">
                         <label htmlFor="thumbnail-upload" className="thumbnail ">
                             <div className="d-flex justify-content-center align-items-center">
@@ -182,11 +204,12 @@ const CreateArticle = () => {
                         />
                     </div>
                     
-                    {/* bubble menu stuff (open at your own risk) */}
                     <div style={{position: "relative"}} className="containerr">
-                        <TextInputWrapped
-                            editor = {editor}
-                            onImageChange={onImageChange}
+                        <TextEditor 
+                            onChange={setContent}
+                        />
+                        <TextEditor 
+                            onChange={setSummary}
                         />
                     </div>
 

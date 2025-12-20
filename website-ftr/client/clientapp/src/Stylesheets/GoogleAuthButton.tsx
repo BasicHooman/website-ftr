@@ -57,7 +57,7 @@ const GoogleAuthButton = ({
         )}
         {((isEditor || isAuthor) && !isAdmin) && (
           <FTRButton
-            onClick={() => navigate("/create")}
+            onClick={() => navigate("/create-article")}
             buttonText="Add Article"
             className="mx-2"
           />

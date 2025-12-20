@@ -1,3 +1,5 @@
+//deprecated
+
 import {BubbleMenu} from "@tiptap/react/menus";
 import {EditorContent, Editor} from "@tiptap/react";
 import LinkIcon from "@mui/icons-material/Link";
@@ -11,6 +13,8 @@ interface TextInputWrappedProps {
 
 const TextInputWrapped = ({editor, onImageChange} : TextInputWrappedProps) => {
 
+
+    
     return (
         <>
             <EditorContent style={{position: "relative"}} editor={editor} />
