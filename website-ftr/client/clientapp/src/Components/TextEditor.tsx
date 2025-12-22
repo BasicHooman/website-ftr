@@ -69,15 +69,15 @@ const TextEditor = ({ initialContent, onChange, fillerText }: TextEditorProps) =
   if (!editor) return null;
 
   return (
-    <div>
-        <div className="bg-[#00C8FFFF] editor-wrapper" style={{fontFamily: "Times New Roman"}}>
-            <div className="editor-surface">
-               <EditorContent 
-                    className="editor-content"
-                    editor={editor}
-                />
-            </div>
-        </div>
+    <div className="mb-4 ">
+      <div className="bg-[#d6c7a0] editor-wrapper outline-round-lg outline-[#AE9C6FFF] outline-4" style={{fontFamily: "Times New Roman"}}>
+          <div className="editor-surface">
+              <EditorContent 
+                className="editor-content"
+                editor={editor}
+              />
+          </div>
+      </div>
 
       <BubbleMenu editor={editor}>
         <button onClick={() => editor.chain().focus().toggleBold().run()}>
