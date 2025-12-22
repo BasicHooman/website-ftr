@@ -11,13 +11,15 @@ import LinkIcon from "@mui/icons-material/Link";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
 import { supabase } from "../lib/supabaseClient";
 import type {JSONContent} from "@tiptap/react";
+import "../styles/EditorStyles.css";
 
 interface TextEditorProps {
   initialContent?: JSONContent;
   onChange: (content: JSONContent) => void;
+  fillerText: string;
 }
 
-const TextEditor = ({ initialContent, onChange }: TextEditorProps) => {
+const TextEditor = ({ initialContent, onChange, fillerText }: TextEditorProps) => {
   const uploadImageToSupabase = async (file: File): Promise<string> => {
     const ext = file.name.split(".").pop();
     const fileName = `${crypto.randomUUID()}.${ext}`;
@@ -58,7 +60,7 @@ const TextEditor = ({ initialContent, onChange }: TextEditorProps) => {
         },
       }),
     ],
-    content: initialContent || "<p>Start writing...</p>",
+    content: initialContent || `<p>${fillerText}</p>`,
     onUpdate({ editor }) {
       onChange(editor.getJSON());
     },
@@ -67,8 +69,15 @@ const TextEditor = ({ initialContent, onChange }: TextEditorProps) => {
   if (!editor) return null;
 
   return (
-    <div style={{ position: "relative" }}>
-      <EditorContent editor={editor} />
+    <div>
+        <div className="bg-[#00C8FFFF] editor-wrapper" style={{fontFamily: "Times New Roman"}}>
+            <div className="editor-surface">
+               <EditorContent 
+                    className="editor-content"
+                    editor={editor}
+                />
+            </div>
+        </div>
 
       <BubbleMenu editor={editor}>
         <button onClick={() => editor.chain().focus().toggleBold().run()}>

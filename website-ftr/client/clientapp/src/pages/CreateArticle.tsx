@@ -205,11 +205,14 @@ const CreateArticle = () => {
                     </div>
                     
                     <div style={{position: "relative"}} className="containerr">
-                        <TextEditor 
-                            onChange={setContent}
-                        />
+
                         <TextEditor 
                             onChange={setSummary}
+                            fillerText="Article Summary..."
+                        />
+                        <TextEditor 
+                            onChange={setContent}
+                            fillerText="Article Content..."
                         />
                     </div>
 
