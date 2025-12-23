@@ -11,7 +11,7 @@ type Article = {
   summary: string;
 };
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 const HomePage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -26,6 +26,13 @@ const HomePage: React.FC = () => {
     const start = (page - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE - 1;
 
+
+    const {data, error} = await supabase 
+      .from("articles")
+      .select("id, title, summary, image_url")
+      .order("created_at", {ascending: false})
+      .range(start, end);
+    {/*
     const { data, error } = await supabase
       .from("articles")
       .select(
@@ -41,7 +48,7 @@ const HomePage: React.FC = () => {
       )
       .order("created_at", { ascending: false })
       .range(start, end);
-
+    */}
     if (error) {
       console.error("Error fetching articles:", error);
       setLoading(false);
@@ -53,7 +60,8 @@ const HomePage: React.FC = () => {
       title: a.title,
       summary: a.summary,
       displayimg: a.image_url,
-      author: a.profiles?.[0]?.username ?? "Unknown",
+      author: "The WokeFighter67",
+      //author: a.profiles?.[0]?.username ?? "Unknown",
     }));
 
     setArticles(formatted);

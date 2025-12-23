@@ -14,7 +14,7 @@ const CreateArticle = () => {
     const [title, setTitle] = useState("");
     const [genre, setGenre] = useState("");
 
-    const [summary, setSummary] = useState<JSONContent | null>(null);
+    const [summary, setSummary] = useState("");
     const [content, setContent] = useState<JSONContent | null>(null);
     
     const [thumbnailName, setThumbnailName] = useState("");
@@ -27,7 +27,7 @@ const CreateArticle = () => {
 
 
     const uploadImageToSupabase = async (file: File): Promise<string> => {
-        const fileExt = file.name.split(".'").pop();
+        const fileExt = file.name.split(".").pop();
         const fileName = `${crypto.randomUUID()}.${fileExt}`;
         const filePath = `thumbnails/${fileName}`;
 
@@ -51,7 +51,6 @@ const CreateArticle = () => {
     }
 
     const handleSubmit = async () => {
-        //if (!editor) return;
 
         const {
             data: {user}
@@ -157,9 +156,10 @@ const CreateArticle = () => {
                     </div>
                     
                     <div style={{position: "relative"}} className="containerr">
-                        <TextEditor 
-                            onChange={setSummary}
-                            fillerText="Article Summary..."
+                        <FTRInputSmall
+                            placeholder="Article Summary"
+                            inputValue={summary}
+                            onChange={(e) => setSummary(e.target.value)}
                         />
                         <TextEditor 
                             onChange={setContent}

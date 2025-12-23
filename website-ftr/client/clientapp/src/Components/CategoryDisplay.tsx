@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-
 interface Article {
   id: number;
   title: string;
@@ -9,7 +8,7 @@ interface Article {
   displayimg: string;
 }
 
-const PAGE_SIZE = 9; // 3x3 grid like your Bootstrap cards
+const PAGE_SIZE = 9;
 
 const CategoryDisplay: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -17,8 +16,7 @@ const CategoryDisplay: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Fetch paginated, category-filtered articles
-  const fetchArticles = async (page: number) => {
+  const fetchArticles = useCallback(async (page: number) => {
     if (!categoryName) return;
 
     const start = (page - 1) * PAGE_SIZE;
@@ -37,7 +35,6 @@ const CategoryDisplay: React.FC = () => {
       return;
     }
 
-    // Transform to your UI format
     const formatted = (data || []).map((a) => ({
       id: a.id,
       title: a.title,
@@ -58,12 +55,14 @@ const CategoryDisplay: React.FC = () => {
     }
 
     setCurrentPage(page);
-  };
+    },
+    [categoryName]
+  );
 
   // Load on mount & when category name changes
   useEffect(() => {
     fetchArticles(1);
-  }, [categoryName]);
+  }, [fetchArticles]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;

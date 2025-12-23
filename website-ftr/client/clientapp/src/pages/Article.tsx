@@ -19,7 +19,7 @@ const Article: React.FC = () => {
 
   useEffect(() => {
     const fetchArticle = async () => {
-      // 1. Fetch article + join to profiles to get author username
+      // Fetch article + join to profiles to get author username
       const { data, error } = await supabase
         .from("articles")
         .select(`
@@ -27,8 +27,9 @@ const Article: React.FC = () => {
           title,
           content,
           image_url,
-          profiles!articles_author_id_fkey (
-            username
+          profiles (
+            username,
+            full_name
           )
         `)
         .eq("id", Number(id))
@@ -44,7 +45,7 @@ const Article: React.FC = () => {
         setArticle({
           id: data.id,
           title: data.title,
-          author: data.profiles?.[0]?.username ?? "Unknown",
+          author: data.profiles?.[0].username ?? data.profiles?.[0].full_name ?? "Unknown",
           content: data.content,
           displayimg: data.image_url,
         });

@@ -12,7 +12,6 @@ import OfficerPage from './pages/OfficerPage';
 import AdminDashboard from './pages/Admindashboard.tsx';
 import CreateArticle  from './pages/CreateArticle.tsx';
 
-
 function App() {
   return (
     <Routes>
