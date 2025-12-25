@@ -12,3 +12,12 @@ export interface AppUser extends SupabaseUser {
         full_name?: string;
     };
 }
+
+export interface ArticleLimited {
+    id: number;
+    title: string;
+    author: string;
+    displayimg: string;
+    genre: string;
+    summary: string;
+}
