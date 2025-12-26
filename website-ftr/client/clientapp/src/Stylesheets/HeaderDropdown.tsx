@@ -61,6 +61,7 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
       { value: "resources", label: "Resources and Education", path: "/category/resources" },
       { value: "action", label: "Action and Advocacy", path: "/category/action" },
       { value: "global", label: "Global Voices", path: "/category/global" },
+      {value: "creative", label: "Creative Corner", path:"/category/creative"}
     ];
 
     const aboutUsDowndownOptions = [

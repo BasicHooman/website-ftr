@@ -19,7 +19,7 @@ const CreateArticle = () => {
     
     const [thumbnailName, setThumbnailName] = useState("");
     const [displayimg, setDisplayimg] = useState("");
-
+    const [authorOverride, setAuthorOverride] = useState("");
 
     const TABLE_NAME = "articles";
     const CONTENT_COLUMN = "content";
@@ -77,6 +77,7 @@ const CreateArticle = () => {
             {
                 title,
                 author_id,
+                author_override: authorOverride.trim() || null,
                 [CONTENT_COLUMN]: content,
                 image_url: displayimg,
                 genre: genre,
@@ -104,6 +105,13 @@ const CreateArticle = () => {
                         onChange={(e) => setTitle(e.target.value)}
                     />
 
+                    <p>The field below overrides the author name. If you are logged into your account, leave this field blank.</p>
+                    <FTRInputSmall
+                        placeholder="Override Name"
+                        inputValue={authorOverride}
+                        onChange={(e) => setAuthorOverride(e.target.value)}
+                    />
+
                     <CoolDropdown
                         selectedValue={genre}
                         options = {[
@@ -111,7 +119,8 @@ const CreateArticle = () => {
                             {value: "opinion", label: "Opinion and Editorial"},
                             {value: "resources", label: "Resources and Education"},
                             {value: "action", label: "Action and Advocacy"},
-                            {value: "global", label: "Global Voices"}
+                            {value: "global", label: "Global Voices"},
+                            {value: "creative", label: "Creative Corner"}
                         ]}
                         onChange={(e) => setGenre(e.target.value)}
                         dropdownLabelTitle="Select Genre"

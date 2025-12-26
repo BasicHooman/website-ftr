@@ -38,6 +38,7 @@ const CategoryDisplay: React.FC = () => {
         summary,
         image_url,
         genre,
+        author_override,
         profiles (
           full_name
         )
@@ -64,7 +65,7 @@ const CategoryDisplay: React.FC = () => {
       title: a.title,
       summary: a.summary,
       displayimg: a.image_url,
-      author: a.profiles?.full_name ?? "Unknown",
+      author: a.author_override || a.profiles?.full_name || "Unknown",
       genre: a.genre,
     }));
 
@@ -103,6 +104,7 @@ const CategoryDisplay: React.FC = () => {
     resources: "Resources and Education",
     action: "Action and Advocacy",
     global: "Global Voices",
+    creative: "Creative Corner",
   };
 
 
@@ -111,7 +113,9 @@ const CategoryDisplay: React.FC = () => {
   return (
     <>
       <title>For The Record</title>        
-      <h2 className="mx-6" style={{fontFamily: "Times New Roman"}}>{categoryName ? categoryLabels[categoryName] || categoryName : "Articles"}</h2>
+      <h2 className="mx-6" style={{fontFamily: "Times New Roman", paddingLeft: "10rem"}}
+      
+      >{categoryName ? categoryLabels[categoryName] || categoryName : "Articles"}</h2>
 
       <div className=" d-flex justify-content-center" style={{fontFamily: "Times New Roman"}}>
         <div>

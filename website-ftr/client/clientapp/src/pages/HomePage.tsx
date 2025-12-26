@@ -28,9 +28,10 @@ const HomePage: React.FC = () => {
         summary,
         image_url,
         genre,
-          profiles!inner(
-            full_name
-          )     
+        author_override,
+        profiles!inner(
+          full_name
+        )     
         `
       )
       .order("created_at", { ascending: false })
@@ -53,7 +54,7 @@ const HomePage: React.FC = () => {
       title: a.title,
       summary: a.summary,
       displayimg: a.image_url,
-      author: a.profiles?.full_name ?? "Unknown",
+      author: a.author_override || a.profiles?.full_name || "Unknown",
       genre: a.genre,
     }));
 

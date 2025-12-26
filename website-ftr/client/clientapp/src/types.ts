@@ -21,4 +21,5 @@ export interface ArticleLimited {
     genre: string;
     summary: string;
     profiles?: string;
+    created_at?: string;
 }

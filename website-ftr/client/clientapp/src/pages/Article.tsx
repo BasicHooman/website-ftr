@@ -10,12 +10,23 @@ interface ArticleProps {
   author: string;
   content?: JSONContent;
   displayimg?: string;
+  created_at?: string;
 }
 
 const Article: React.FC = () => {
   const { id } = useParams();
   const [article, setArticle] = useState<ArticleProps | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -27,6 +38,8 @@ const Article: React.FC = () => {
           title,
           content,
           image_url,
+          author_override,
+          created_at,
           profiles!inner(
             full_name
           )
@@ -45,9 +58,10 @@ const Article: React.FC = () => {
           id: data.id,
           title: data.title,
           //im choosing to ignore this error because i think its a necessary evil
-          author: data.profiles?.full_name ?? "Unknown",
+          author: data.author_override || data.profiles?.full_name || "Unknown",
           content: data.content,
           displayimg: data.image_url,
+          created_at: data.created_at
         });
       }
 
@@ -88,6 +102,15 @@ const Article: React.FC = () => {
               className="w-2/5 h-2/5 outline-[#b30920] outline outline-3 outline-round-lg" 
             />
             <p style= {{paddingBottom: "1.5rem"}}></p>
+            <p  style={{
+                    alignSelf: "flex-start",
+                    paddingLeft: "13.5rem",
+                      marginTop: "0.75rem",
+                      marginBottom: "1.25rem",
+                      fontStyle: "italic",
+                      color: "#555",
+                    }}
+            >Published: {formatDate(article.created_at)}</p>
             <div className="article-content">
               <RenderContent content={article.content} />
             </div>
