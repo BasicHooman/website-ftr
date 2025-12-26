@@ -85,7 +85,7 @@ const CategoryDisplay: React.FC = () => {
     setCurrentPage(page);
     setLoading(false);
     },
-    [categoryName]
+    [categoryName, navigate]
   );
 
   // Load on mount & when category name changes

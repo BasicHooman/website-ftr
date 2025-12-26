@@ -36,7 +36,7 @@ const GoogleAuthButton = ({
 
     const isAdmin = roles?.admin;
     const isEditor = roles?.editor;
-    const isAuthor = roles?.author;
+    //const isAuthor = roles?.author;
 
     return (
       <div style={{ display: "flex", alignItems: "center", gap: "12px", fontFamily: "Times New Roman"}} className="mx-2">
@@ -50,7 +50,7 @@ const GoogleAuthButton = ({
             />
           </>
         )}
-        {((isEditor || isAuthor) && !isAdmin) && (
+        {((isEditor) && !isAdmin) && (
           <FTRButton
             onClick={() => navigate("/create-article")}
             buttonText="Add Article"
