@@ -19,13 +19,6 @@ const HomePage: React.FC = () => {
     const start = (page - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE - 1;
 
-    {/*
-    const {data, error} = await supabase 
-      .from("articles")
-      .select("id, title, summary, image_url, genre")
-      .order("created_at", {ascending: false})
-      .range(start, end);
-    */}
     const { data, error } = await supabase
       .from("articles")
       .select(
@@ -35,10 +28,10 @@ const HomePage: React.FC = () => {
         summary,
         image_url,
         genre,
-        profiles:profiles!articles_author_id_fkey (
-          full_name
-        )
-      `
+          profiles!inner(
+            full_name
+          )     
+        `
       )
       .order("created_at", { ascending: false })
       .range(start, end);
@@ -60,7 +53,7 @@ const HomePage: React.FC = () => {
       title: a.title,
       summary: a.summary,
       displayimg: a.image_url,
-      author: a.profiles && a.profiles.length > 0 ? a.profiles[0].full_name : "Unknown",
+      author: a.profiles?.full_name ?? "Unknown",
       genre: a.genre,
     }));
 

@@ -20,4 +20,5 @@ export interface ArticleLimited {
     displayimg: string;
     genre: string;
     summary: string;
+    profiles?: string;
 }

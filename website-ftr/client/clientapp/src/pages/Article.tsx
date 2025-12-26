@@ -39,8 +39,6 @@ const Article: React.FC = () => {
         setLoading(false);
         return;
       }
-console.log("Raw data from Supabase:", data);
-console.log("Profiles array:", data.profiles);
 
       if (data) {
         setArticle({

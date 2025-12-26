@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-interface Article {
-  id: number;
-  title: string;
-  summary: string;
-  displayimg: string;
-}
+import { useNavigate } from "react-router-dom";
+import type {ArticleLimited as Article} from "../types.ts";
+import ArticlePreview from "../Stylesheets/ArticlePreview";
+import "../styles/ArticlePreviewStyles.css";
+import FTRButton from "../Stylesheets/FTRButton.tsx";
 
 const PAGE_SIZE = 9;
 
@@ -15,9 +14,17 @@ const CategoryDisplay: React.FC = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const fetchArticles = useCallback(async (page: number) => {
-    if (!categoryName) return;
+    setLoading(true);
+
+    if (!categoryName){
+      navigate("/");
+      return;
+    }
 
     const start = (page - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE - 1;
@@ -25,22 +32,42 @@ const CategoryDisplay: React.FC = () => {
     // Query Supabase for this category
     const { data, error } = await supabase
       .from("articles")
-      .select("id, title, summary, image_url")
+      .select(`
+        id,
+        title,
+        summary,
+        image_url,
+        genre,
+        profiles (
+          full_name
+        )
+      `)
       .eq("genre", categoryName)
       .order("created_at", { ascending: false })
       .range(start, end);
 
+    
     if (error) {
       console.error("Error fetching articles:", error);
+      setLoading(false);
       return;
     }
 
-    const formatted = (data || []).map((a) => ({
+    if(!data){
+      setArticles([]);
+      setLoading(false);
+      return;
+    }
+
+    const formatted: Article[] = data.map((a) => ({
       id: a.id,
       title: a.title,
       summary: a.summary,
       displayimg: a.image_url,
+      author: a.profiles?.full_name ?? "Unknown",
+      genre: a.genre,
     }));
+
 
     setArticles(formatted);
 
@@ -55,6 +82,7 @@ const CategoryDisplay: React.FC = () => {
     }
 
     setCurrentPage(page);
+    setLoading(false);
     },
     [categoryName]
   );
@@ -76,48 +104,42 @@ const CategoryDisplay: React.FC = () => {
     action: "Action and Advocacy",
     global: "Global Voices",
   };
+
+
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <div className="container">
-      <h2>{categoryName ? categoryLabels[categoryName] || categoryName : "Articles"}</h2>
+    <>
+      <title>For The Record</title>        
+      <h2 className="mx-6" style={{fontFamily: "Times New Roman"}}>{categoryName ? categoryLabels[categoryName] || categoryName : "Articles"}</h2>
 
-      <div className="row">
-        {articles.map((article) => (
-          <div className="col-md-4" key={article.id}>
-            <div className="card mb-4 shadow-sm">
-              <img
-                src={article.displayimg}
-                className="card-img-top"
-                alt={article.title}
-              />
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link to={`/articles/${article.id}`}>{article.title}</Link>
-                </h5>
-                <p className="card-text">{article.summary}</p>
-              </div>
-            </div>
+      <div className=" d-flex justify-content-center" style={{fontFamily: "Times New Roman"}}>
+        <div>
+          <div className="article-grid-container">
+            {articles.map((article) => (
+              <ArticlePreview key={article.id} article={article} />
+            ))}
           </div>
-        ))}
+        </div>
       </div>
+        {/* PAGINATION */}
+        <div className="d-flex justify-content-center mx-2">
+          <FTRButton
+            buttonText = "Previous"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="flex-fill"
+          />
 
-      {/* PAGINATION */}
-      <div className="d-flex justify-content-center">
-        <button
-          className="btn btn-primary mx-1"
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <button
-          className="btn btn-primary mx-1"
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+          <FTRButton
+            buttonText = "Next"
+            onClick = {() => handlePageChange(currentPage + 1)}
+            disabled = {currentPage === totalPages}
+            className="flex-fill"
+            style= {{width: "115%"}}
+          />
+        </div>
+    </>
   );
 };
 
