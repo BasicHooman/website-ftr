@@ -48,11 +48,6 @@ const GoogleAuthButton = ({
               buttonText="Add Article"
               className="mx-2"
             />
-            <FTRButton
-              onClick={() => navigate("/testing-styles")}
-              buttonText="Debug"
-              className="mx-2"
-            />
           </>
         )}
         {((isEditor || isAuthor) && !isAdmin) && (
