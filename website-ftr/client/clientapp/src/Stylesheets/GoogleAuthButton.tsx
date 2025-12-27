@@ -1,8 +1,17 @@
 import googleLogo from "../assets/google-logo.svg";
+import FTRButton from "./FTRButton";
+import {useNavigate} from "react-router-dom";
 
 interface User {
   user_metadata?: {
     full_name?: string;
+  };
+  app_metadata?: {
+    roles?:{
+      admin: boolean;
+      editor: boolean;
+      author: boolean;
+    };
   };
 }
 
@@ -17,25 +26,43 @@ const GoogleAuthButton = ({
   onLogin,
   onLogout,
 }: GoogleAuthButtonProps) => {
+  
+  const navigate = useNavigate();
+
   if (user) {
-    const firstName =
-      user.user_metadata?.full_name?.split(" ")[0] ?? "User";
+    const roles = user.app_metadata?.roles;
+     
+    const firstName = user.user_metadata?.full_name?.split(" ")[0] ?? "User";
+
+    const isAdmin = roles?.admin;
+    const isEditor = roles?.editor;
+    //const isAuthor = roles?.author;
 
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <span>Welcome, {firstName}</span>
-        <button
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", fontFamily: "Times New Roman"}} className="mx-2">
+        <span>Welcome, {firstName}!</span>
+        {isAdmin && (
+          <>
+            <FTRButton
+              onClick={() => navigate("/create-article")}
+              buttonText="Add Article"
+              className="mx-2"
+            />
+          </>
+        )}
+        {((isEditor) && !isAdmin) && (
+          <FTRButton
+            onClick={() => navigate("/create-article")}
+            buttonText="Add Article"
+            className="mx-2"
+          />
+        )}
+
+        <FTRButton
           onClick={onLogout}
-          style={{
-            padding: "8px 14px",
-            borderRadius: "4px",
-            border: "1px solid #dadce0",
-            backgroundColor: "#ffffff",
-            cursor: "pointer",
-          }}
-        >
-          Logout
-        </button>
+          buttonText="Logout"
+          className="mx-2"
+        />
       </div>
     );
   }
@@ -63,6 +90,7 @@ const GoogleAuthButton = ({
       onMouseOut={(e) =>
         (e.currentTarget.style.backgroundColor = "#ffffff")
       }
+      className="me-4"
     >
       <img
         src={googleLogo}

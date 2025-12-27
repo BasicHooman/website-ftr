@@ -51,7 +51,7 @@ const OfficerBrick : React.FC<OfficerBrickProps> = ({ pictureLink, officerName, 
   }, [officerName, officerTitle]);
 
   return (
-    <div className={`bg-[#f5f1e9] p-8 w-1/6 h-[32rem] rounded-md shadow-md justify-center outline outline-4 outline-round-md outline-offset-2 outline-[#d6c7a0]`} style={{ transform: 'scale(0.9)' }}>
+    <div className={`bg-[#f5f1e9] p-8 w-1/6 h-[32rem] rounded-md shadow-md justify-center outline outline-4 outline-round-md outline-offset-2 outline-[#d6c7a0]`} style={{ transform: 'scale(0.9)', fontFamily: "Times New Roman" }}>
       <div className="text-center mb-4">
         <p ref={nameRef} className="font-bold bg-[#d6c7a0] p-2 rounded-md" style={{ fontSize: nameFontSize }}>{officerName}</p>
       </div>

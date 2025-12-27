@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CoolDropdown from "./CoolDropdown";
-//import front_logo from '../assets/big-ftr-logo.png';
 import { supabase } from "../lib/supabaseClient";
-import type {User, Session} from "@supabase/supabase-js";
+import type { Session} from "@supabase/supabase-js";
 import FTRLogoButton from "./FTRLogoButton";
 import GoogleAuthButton from "./GoogleAuthButton";
+
+import type {AppUser } from "../types";
 interface HeaderDropdownProps {
   selectedValue?: string;
 }
@@ -13,7 +14,7 @@ interface HeaderDropdownProps {
 const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
   ({ selectedValue }, ref) => {
     const navigate = useNavigate();
-    const [user, setUser] = useState<User | null >(null);
+    const [user, setUser] = useState<AppUser | null >(null);
 
     // Fetch session
     useEffect(() => {
@@ -55,11 +56,12 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
     };
 
     const categoryDropdownOptions = [
-      { value: "news", label: "News and Features", path: "/category/news-and-features" },
-      { value: "opinion", label: "Opinion and Editorial", path: "/category/opinion-and-editorial" },
-      { value: "resources", label: "Resources and Education", path: "/category/resources-and-education" },
-      { value: "action", label: "Action and Advocacy", path: "/category/action-and-advocacy" },
-      { value: "global", label: "Global Voices", path: "/category/global-voices" },
+      { value: "news", label: "News and Features", path: "/category/news" },
+      { value: "opinion", label: "Opinion and Editorial", path: "/category/opinion" },
+      { value: "resources", label: "Resources and Education", path: "/category/resources" },
+      { value: "action", label: "Action and Advocacy", path: "/category/action" },
+      { value: "global", label: "Global Voices", path: "/category/global" },
+      {value: "creative", label: "Creative Corner", path:"/category/creative"}
     ];
 
     const aboutUsDowndownOptions = [
@@ -94,24 +96,27 @@ const HeaderDropdown = React.forwardRef<HTMLDivElement, HeaderDropdownProps>(
                 <span className="navbar-toggler-icon"></span>
               </button>
 
-              <div className="navbar navbar-collapse justify-center items-center" id="navbarNav">
-                <ul className="navbar-nav mx-auto justify-center">
+              <div className="navbar navbar-collapse justify-center items-center mx-2" id="navbarNav">
+                <ul className="navbar-nav mx-auto justify-center mx-2">
                   <GoogleAuthButton
                     user={user}
                     onLogout={handleLogout}
-                    onLogin={handleLogin} 
+                    onLogin={handleLogin}                     
                   />
                   <CoolDropdown
                     dropdownLabelTitle="Categories"
                     options={categoryDropdownOptions}
                     selectedValue={selectedValue}
                     onChange={handleDropNavigate(categoryDropdownOptions)}
+                    style={{width: "80%"}}
+                    
                   />
                   <CoolDropdown
                     dropdownLabelTitle="About Us"
                     options={aboutUsDowndownOptions}
                     selectedValue={selectedValue}
                     onChange={handleDropNavigate(aboutUsDowndownOptions)}
+                    style={{width: "100%"}}
                   />
                 </ul>
               </div>

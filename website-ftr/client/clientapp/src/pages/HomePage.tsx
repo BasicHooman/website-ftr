@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
+import FTRButton from "../Stylesheets/FTRButton.tsx";
+import ArticlePreview from "../Stylesheets/ArticlePreview.tsx";
+import type {ArticleLimited as Article} from "../types.ts";
+import "../styles/ArticlePreviewStyles.css";
 
-type Article = {
-  id: number;
-  title: string;
-  author: string;
-  displayimg: string;
-  summary: string;
-};
-
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 const HomePage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const nav = useNavigate();
 
   const fetchArticles = async (page: number) => {
     setLoading(true);
@@ -33,26 +27,35 @@ const HomePage: React.FC = () => {
         title,
         summary,
         image_url,
-        profiles!articles_author_id_fkey (
-          username
-        )
-      `
+        genre,
+        author_override,
+        profiles!inner(
+          full_name
+        )     
+        `
       )
       .order("created_at", { ascending: false })
       .range(start, end);
-
+    
     if (error) {
       console.error("Error fetching articles:", error);
       setLoading(false);
       return;
     }
 
-    const formatted = data.map((a) => ({
+    if (!data) {
+      setArticles([]);
+      setLoading(false);
+      return;
+    }
+
+    const formatted: Article[] = data.map((a) => ({
       id: a.id,
       title: a.title,
       summary: a.summary,
       displayimg: a.image_url,
-      author: a.profiles?.[0]?.username ?? "Unknown",
+      author: a.author_override || a.profiles?.[0]?.full_name || "Unknown",
+      genre: a.genre,
     }));
 
     setArticles(formatted);
@@ -78,122 +81,61 @@ const HomePage: React.FC = () => {
     fetchArticles(newPage);
   };
 
+  // eventually replace this with something a little fancier if you're
+  // dying for something to do
   if (loading) return <p>Loading...</p>;
 
   return (
-    <>
-      <title>For The Record</title>
+  <>
+    <title>For The Record</title>
 
-      <div className="d-flex justify-content-center">
-        {/* TRENDING */}
+    <div className="d-flex justify-content-center">
+      {/* TRENDING */}
+      <div>
+        <div className="article-grid-container">
+          {articles.map((article) => (
+            <ArticlePreview key={article.id} article={article} />
+          ))}
+        </div>
+      </div>
+
+      {/*
+      RECENT UPLOADS
+      I commented this out bc we don't have the tracking metrics to make this a thing right now
+      <div className="left">
         <div>
-          <div className="left1">
-            <h2 style={{ fontSize: "2.1rem" }}>Trending</h2>
-          </div>
-
-          <div className="d-flex flex-wrap mb-5" style={{ width: "560px" }}>
-            {articles.map((article) => (
-              <div
-                key={article.id}
-                className="d-flex mx-auto news margin-top mx-5"
-                style={{ flexWrap: "nowrap", alignItems: "flex-start" }}
-              >
-                <div
-                  className="articleitem p-2"
-                  onClick={() => nav(`/articles/${article.id}`)}
-                >
-                  <div className="displaycont" style={{ width: "235px" }}>
-                    <h3>{article.title}</h3>
-                  </div>
-
-                  <p className="displaycont" style={{ width: "235px" }}>
-                    <b>Author:</b> {article.author}
-                  </p>
-
-                  <p
-                    className="displaycont"
-                    style={{ paddingBottom: "1.2rem", width: "220px" }}
-                  >
-                    {article.summary}
-                  </p>
-                </div>
-
-                <div className="my-3">
-                  <img
-                    src={article.displayimg}
-                    width="310"
-                    height="207"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+          <h2 style={{ fontSize: "2.1rem" }}>Recent Uploads</h2>
         </div>
 
-        {/* RECENT UPLOADS */}
-        <div className="left">
-          <div>
-            <h2 style={{ fontSize: "2.1rem" }}>Recent Uploads</h2>
-          </div>
-
-          <div className="d-flex flex-wrap mb-5" style={{ width: "340px" }}>
-            {articles.map((article) => (
-              <div
-                key={article.id}
-                className="d-flex flex-wrap mx-auto news margin-top mx-5"
-              >
-                <div
-                  className="articleitem p-2"
-                  onClick={() => nav(`/articles/${article.id}`)}
-                >
-                  <div className="my-2">
-                    <img
-                      src={article.displayimg}
-                      width="310"
-                      height="207"
-                      style={{ objectFit: "cover" }}
-                    />
-                  </div>
-
-                  <div className="displaycont">
-                    <h3>{article.title}</h3>
-                  </div>
-
-                  <p className="displaycont" style={{ width: "235px" }}>
-                    <b>Author:</b> {article.author}
-                  </p>
-
-                  <p className="displaycont" style={{ width: "235px" }}>
-                    {article.summary}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="d-flex flex-wrap mb-5" style={{ width: "340px" }}>
+          {articles.map((article) => (
+            <ArticlePreview key={article.id} article={article} />
+          ))}
         </div>
       </div>
+      */}
+    </div>
 
-      {/* PAGINATION */}
-      <div className="d-flex justify-content-center">
-        <button
-          className="btn btn-primary mx-1"
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
+    {/* PAGINATION */}
+    <div className="d-flex justify-content-center mx-2">
+      <FTRButton
+        buttonText="Previous"
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="flex-fill"
+      />
 
-        <button
-          className="btn btn-primary mx-1"
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
-    </>
-  );
+      <FTRButton
+        buttonText="Next"
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="flex-fill"
+        style={{ width: "115%" }}
+      />
+    </div>
+  </>
+);
+
 };
 
 export default HomePage;

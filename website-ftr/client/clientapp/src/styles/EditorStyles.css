@@ -1,0 +1,22 @@
+.editor-wrapper {
+    width: 100%;
+    display:flex;
+    justify-content:center;
+}
+
+.editor-content {
+    width:100%;
+    max-width: 100ch;
+    min-height: 7rem;
+    padding: 2rem;
+    font-family: "Times New Roman";
+    border-radius: 0.5rem;
+
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+}
+
+.editor-content .ProseMirror {
+    min-height: inherit;
+    outline: none;
+}

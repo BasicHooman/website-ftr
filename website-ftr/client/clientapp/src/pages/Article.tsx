@@ -10,6 +10,7 @@ interface ArticleProps {
   author: string;
   content?: JSONContent;
   displayimg?: string;
+  created_at?: string;
 }
 
 const Article: React.FC = () => {
@@ -17,9 +18,19 @@ const Article: React.FC = () => {
   const [article, setArticle] = useState<ArticleProps | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+
   useEffect(() => {
     const fetchArticle = async () => {
-      // 1. Fetch article + join to profiles to get author username
+      // Fetch article + join to profiles to get author username
       const { data, error } = await supabase
         .from("articles")
         .select(`
@@ -27,8 +38,10 @@ const Article: React.FC = () => {
           title,
           content,
           image_url,
-          profiles!articles_author_id_fkey (
-            username
+          author_override,
+          created_at,
+          profiles!inner(
+            full_name
           )
         `)
         .eq("id", Number(id))
@@ -44,11 +57,14 @@ const Article: React.FC = () => {
         setArticle({
           id: data.id,
           title: data.title,
-          author: data.profiles?.[0]?.username ?? "Unknown",
+          //im choosing to ignore this error because i think its a necessary evil
+          author: data.author_override || data.profiles?.full_name || "Unknown",
           content: data.content,
           displayimg: data.image_url,
+          created_at: data.created_at
         });
       }
+
 
       setLoading(false);
     };
@@ -67,18 +83,38 @@ const Article: React.FC = () => {
           marginBottom: "2rem",
           padding: "1rem",
           border: "1px solid #ccc",
+          fontFamily: "Times New Roman",
         }}
       >
-        <div className="titlecont">
-          <h3>{article.title}</h3>
-        </div>
+        <div className="w-3-4 bg-[#f5f1e9]">
+          <div className="titlecont">
+            <h3>{article.title}</h3>
+          </div>
 
-        <p className="titlecont" style={{ paddingBottom: "1.5rem" }}>
-          <b>Author:</b> {article.author}
-        </p>
+          <p className="titlecont" style={{ paddingBottom: "1.5rem" }}>
+            <b>By:</b> {article.author}
+          </p>
 
-        <div className="article-content">
-          <RenderContent content={article.content} />
+          <div className="flex flex-col items-center justify-center mb-2" style= {{paddingBottom: "1.5rem"}} >
+            <img 
+              src={article.displayimg} 
+              //className="w-full max-w-[600px] max-h-[500px] object-contain outline-[#b30920] outline outline-3 rounded-lg"
+              className="w-2/5 h-2/5 outline-[#b30920] outline outline-3 outline-round-lg" 
+            />
+            <p style= {{paddingBottom: "1.5rem"}}></p>
+            <p  style={{
+                    alignSelf: "flex-start",
+                    paddingLeft: "13.5rem",
+                      marginTop: "0.75rem",
+                      marginBottom: "1.25rem",
+                      fontStyle: "italic",
+                      color: "#555",
+                    }}
+            >Published: {formatDate(article.created_at)}</p>
+            <div className="article-content">
+              <RenderContent content={article.content} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
