@@ -21,6 +21,7 @@ const CreateArticle = () => {
   const [genre, setGenre] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState<JSONContent | null>(null);
+  const [authorOverride, setAuthorOverride] = useState("");
 
   const [displayimg, setDisplayimg] = useState("");
   const [thumbnailName, setThumbnailName] = useState("");
@@ -122,7 +123,7 @@ const CreateArticle = () => {
 
     const { data: profile } = await supabase
       .from("profiles")
-      .select("id")
+      .select("id, full_name")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -130,10 +131,15 @@ const CreateArticle = () => {
       setMessage("No profile found for this user.");
       return;
     }
+    if (!profile.full_name) {
+      setMessage("Profile is missing a full name.");
+      return;
+    }
 
     const { error } = await supabase.from("articles").insert({
       title,
       author_id: profile.id,
+      author_override: profile.full_name,
       content,
       image_url: displayimg,
       genre,
