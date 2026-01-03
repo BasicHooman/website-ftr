@@ -1,66 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../lib/supabaseClient"; // <-- make sure path is correct
-import OfficerBrick from "../Stylesheets/OfficerBrick";
 
-interface Officer {
-  id: number;
-  full_name: string;
-  title: string;
-  email?: string;
-  location?: string;
-  youtube?: string;
-  linkedin?: string;
-  instagram?: string;
-  x_social?: string;
-  facebook?: string;
-  photo_url?: string;
-}
-
-const AboutUs: React.FC = () => {
-  const [officers, setOfficers] = useState<Officer[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchOfficers = async () => {
-      const { data, error } = await supabase
-        .from("officers")
-        .select("*")
-        .order("id", { ascending: true });
-
-      if (error) {
-        console.error("Error fetching officers:", error);
-      } else {
-        setOfficers(data || []);
-      }
-
-      setLoading(false);
-    };
-
-    fetchOfficers();
-  }, []);
-
-  if (loading) return <p>Loading officers...</p>;
-
+const AboutUs: React.FC = () =>{
   return (
     <div>
       <title>About Us</title>
-      <h1>About Us</h1>
 
-      <div className="officer-container">
-        {officers.map((officer) => (
-          <OfficerBrick
-            key={officer.id}
-            officerName={officer.full_name}
-            officerTitle={officer.title}
-            officerEmail={officer.email}
-            officerYoutube={officer.youtube}
-            officerLinkedIn={officer.linkedin}
-            officerInstagram={officer.instagram}
-            officerTwitter={officer.x_social}
-            officerFacebook={officer.facebook}
-            pictureLink={officer.photo_url || ""} // <= now uses real URL from DB
-          />
-        ))}
+      <div className="flex flex-col items-center justify-center" style={{fontFamily: "Times New Roman"}}>
+        <div className="w-7/8 bg-[#f5f1e9] 6rm">
+          <h1 style={{paddingLeft: "2rem"}}>Leaders in youth advocacy fighting for change, one article at a time.</h1>
+
+          <div>
+            <p>Created in 2025, For The Record is an organization of student writers in secondary and post-secondary schools. As a global force, we have writers and editors from many different countries. We use the internet to unite the universally repressed youth voice.</p>
+            <p>The young will inherit the world, yet we are given little say of how lawmakers and businessmen treat it. We are using For The Record to speak out again injustice and find empowerment.</p>
+            <p>Everything you see on this here is 100% student made, including even the artchitecture of this website! If you are interested in learning more, joining our team, or supporting our journey, feel free to get in contact with any of our officers, or use the contact information below.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

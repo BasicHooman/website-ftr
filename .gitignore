@@ -4,3 +4,7 @@ website-ftr/client/clientapp/src/Stylesheets/mainStyles.jsx
 /website-ftr/client/clientapp/src/reference/illegal.jsx
 /website-ftr/client/clientapp/src/reference/super-illegal.jsx
 website-ftr/Server/.env
+
+# Ignore all .env files
+.env*
+/website-ftr/client/clientapp/.env

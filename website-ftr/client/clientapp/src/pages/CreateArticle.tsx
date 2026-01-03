@@ -13,7 +13,7 @@ import FileHandler from "@tiptap/extension-file-handler";
 import LinkIcon from "@mui/icons-material/Link";
 import ImageIcon from "@mui/icons-material/Image";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
-
+import FTRInputSmall from "../Stylesheets/FTRInputSmall.tsx";
 import { supabase } from "../lib/supabaseClient";
 
 const CreateArticle = () => {
@@ -79,7 +79,7 @@ const CreateArticle = () => {
         },
       }),
     ],
-    content: "<p>Hello World!</p>",
+    content: "<p>Start drafting your dream piece!</p>",
     onUpdate: ({ editor }) => {
       setContent(editor.getJSON());
     },
@@ -182,6 +182,12 @@ const CreateArticle = () => {
               Selected file: {thumbnailName}
             </div>
           )}
+
+          <FTRInputSmall
+            inputValue={authorOverride}
+            placeholder="Author Override"
+            onChange={(e) => setAuthorOverride(e.target.value)}
+          />
 
           <div style={{ marginTop: "1rem" }}>
             <select

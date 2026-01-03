@@ -58,7 +58,7 @@ const Article: React.FC = () => {
           id: data.id,
           title: data.title,
           //im choosing to ignore this error because i think its a necessary evil
-          author: data.author_override || data.profiles?.full_name || "Unknown",
+          author: data.author_override || data.profiles?.[0]?.full_name || "Unknown",
           content: data.content,
           displayimg: data.image_url,
           created_at: data.created_at
