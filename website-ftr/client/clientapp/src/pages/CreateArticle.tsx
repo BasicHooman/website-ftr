@@ -157,180 +157,183 @@ const CreateArticle = () => {
   if (!editor) return null;
 
   return (
-    <>
+    <div className="bg-[#f5f1e9] w-3/4 items-center justify-center mx-auto mb-2" style={{ padding: "1rem" }}>
       <title>Creative Corner</title>
 
-      <div className="containerr cont">
-        <div className="text-start">
-          <label htmlFor="thumbnail-upload" className="thumbnail">
-            <div className="d-flex justify-content-center align-items-center">
-              <div className="mx-1" style={{ paddingBottom: ".1rem" }}>
-                <ImageIcon fontSize="small" />
-              </div>
-              <div className="mx-1">Upload Thumbnail</div>
-            </div>
-          </label>
+      <div className="mx-auto flex flex-col gap-6 items-center w-full max-w-2xl px-4">
+        <div className="container-cont" style={{padding: "1rem"}}>
+          <input
+            type="text"
+            placeholder="Enter Article Title..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="write d-flex justify-content-center align-items-center"
+          />
+          <div className="flex flex-col md:flex-row gap-6 w-full">
+            <div className="text-start"  style={{padding: "1rem"}}>
+              <label htmlFor="thumbnail-upload" className="thumbnail">
+                <div className="d-flex justify-content-center align-items-center">
+                  <div className="mx-1" style={{ paddingBottom: ".1rem" }}>
+                    <ImageIcon fontSize="small" />
+                  </div>
+                  <div className="mx-1">Upload Thumbnail</div>
+                </div>
+              </label>
 
-          {thumbnailName && (
-            <div
+              {thumbnailName && (
+                <div
+                  style={{
+                    marginTop: "0.5rem",
+                    fontStyle: "italic",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  Selected file: {thumbnailName}
+                </div>
+              )}
+
+              <FTRInputSmall
+                inputValue={authorOverride}
+                placeholder="Author Override"
+                onChange={(e) => setAuthorOverride(e.target.value)}
+              />
+
+              <div style={{ marginTop: "1rem" }}>
+                <select
+                  value={genre}
+                  onChange={(e) => setGenre(e.target.value)}
+                  className="thumbnail"
+                  style={{ padding: "0.25rem", fontSize: "1rem" }}
+                >
+                  <option value="">-- Select Genre --</option>
+                  <option value="news">News and Features</option>
+                  <option value="opinion">Opinion and Editorial</option>
+                  <option value="resources">Resources and Education</option>
+                  <option value="action">Action and Advocacy</option>
+                  <option value="global">Global Voices</option>
+                </select>
+              </div>
+
+              <input
+                id="thumbnail-upload"
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setThumbnailName(file.name);
+                  const url = await uploadImageToSupabase(file);
+                  setDisplayimg(url);
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="containerr" style={{ marginTop: "2rem" }}>
+            <textarea
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+              rows={4}
+              placeholder="Short summary of article (50–100 words)"
+              className="summary thumbnail"
+              style={{ width: "30rem" }}
+            />
+          </div>
+
+          <div className="containerr" style={{ position: "relative" }}>
+            <EditorContent editor={editor} />
+
+            <BubbleMenu
+              editor={editor}
+              shouldShow={({ editor }) =>
+                editor.state.selection.content().size > 0
+              }
               style={{
-                marginTop: "0.5rem",
-                fontStyle: "italic",
-                fontSize: "0.9rem",
+                fontSize: ".1rem",
+                padding: ".2rem",
+                borderRadius: ".2rem",
+                backgroundColor: "#242422",
+                fontFamily: "Newsreader, serif",
               }}
             >
-              Selected file: {thumbnailName}
-            </div>
-          )}
+              <button
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className="btn btn-sm my-button text-white"
+              >
+                <b>B</b>
+              </button>
 
-          <FTRInputSmall
-            inputValue={authorOverride}
-            placeholder="Author Override"
-            onChange={(e) => setAuthorOverride(e.target.value)}
-          />
+              <button
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className="btn btn-sm my-button text-white"
+              >
+                <i>I</i>
+              </button>
 
-          <div style={{ marginTop: "1rem" }}>
-            <select
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              className="thumbnail"
-              style={{ padding: "0.25rem", fontSize: "1rem" }}
-            >
-              <option value="">-- Select Genre --</option>
-              <option value="news">News and Features</option>
-              <option value="opinion">Opinion and Editorial</option>
-              <option value="resources">Resources and Education</option>
-              <option value="action">Action and Advocacy</option>
-              <option value="global">Global Voices</option>
-            </select>
+              <button
+                onClick={() => editor.chain().focus().toggleStrike().run()}
+                className="btn btn-sm my-button text-white"
+              >
+                <s>S</s>
+              </button>
+
+              <button
+                onClick={() =>
+                  editor.chain().focus().toggleHeading({ level: 1 }).run()
+                }
+                className="btn btn-sm my-button text-white"
+              >
+                T
+              </button>
+
+              <button
+                onClick={() => {
+                  const url = window.prompt("Enter the URL");
+                  if (!url) return;
+                  editor
+                    .chain()
+                    .focus()
+                    .setLink({
+                      href: url.match(/^https?:\/\//) ? url : `https://${url}`,
+                    })
+                    .run();
+                }}
+                className="btn btn-sm my-button text-white"
+              >
+                <LinkIcon fontSize="small" />
+              </button>
+
+              <button
+                onClick={() => editor.chain().focus().unsetLink().run()}
+                className="btn btn-sm my-button text-white"
+              >
+                <LinkOffIcon fontSize="small" />
+              </button>
+
+              <label className="btn btn-sm my-button text-white">
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={onInlineImageUpload}
+                />
+                <ImageIcon fontSize="small" />
+              </label>
+            </BubbleMenu>
+          </div>
+
+
+
+          <div className="text-center" style={{ marginTop: "2rem" }}>
+            <button className="thumbnail bottom" onClick={handleSubmit}>
+              Submit Article
+            </button>
+            {message && <p>{message}</p>}
           </div>
         </div>
-
-        <input
-          id="thumbnail-upload"
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={async (e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            setThumbnailName(file.name);
-            const url = await uploadImageToSupabase(file);
-            setDisplayimg(url);
-          }}
-        />
       </div>
-
-      <div style={{ padding: "1rem" }}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="write d-flex justify-content-center align-items-center"
-        />
-      </div>
-
-      <div className="containerr" style={{ position: "relative" }}>
-        <EditorContent editor={editor} />
-
-        <BubbleMenu
-          editor={editor}
-          shouldShow={({ editor }) =>
-            editor.state.selection.content().size > 0
-          }
-          style={{
-            fontSize: ".1rem",
-            padding: ".2rem",
-            borderRadius: ".2rem",
-            backgroundColor: "#242422",
-            fontFamily: "Newsreader, serif",
-          }}
-        >
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className="btn btn-sm my-button text-white"
-          >
-            <b>B</b>
-          </button>
-
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className="btn btn-sm my-button text-white"
-          >
-            <i>I</i>
-          </button>
-
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className="btn btn-sm my-button text-white"
-          >
-            <s>S</s>
-          </button>
-
-          <button
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-            className="btn btn-sm my-button text-white"
-          >
-            T
-          </button>
-
-          <button
-            onClick={() => {
-              const url = window.prompt("Enter the URL");
-              if (!url) return;
-              editor
-                .chain()
-                .focus()
-                .setLink({
-                  href: url.match(/^https?:\/\//) ? url : `https://${url}`,
-                })
-                .run();
-            }}
-            className="btn btn-sm my-button text-white"
-          >
-            <LinkIcon fontSize="small" />
-          </button>
-
-          <button
-            onClick={() => editor.chain().focus().unsetLink().run()}
-            className="btn btn-sm my-button text-white"
-          >
-            <LinkOffIcon fontSize="small" />
-          </button>
-
-          <label className="btn btn-sm my-button text-white">
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={onInlineImageUpload}
-            />
-            <ImageIcon fontSize="small" />
-          </label>
-        </BubbleMenu>
-      </div>
-
-      <div className="containerr" style={{ marginTop: "2rem" }}>
-        <textarea
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
-          rows={4}
-          placeholder="Short summary of article (50–100 words)"
-          className="summary thumbnail"
-          style={{ width: "30rem" }}
-        />
-      </div>
-
-      <div className="text-center" style={{ marginTop: "2rem" }}>
-        <button className="thumbnail bottom" onClick={handleSubmit}>
-          Submit Article
-        </button>
-        {message && <p>{message}</p>}
-      </div>
-    </>
+    </div>
   );
 };
 

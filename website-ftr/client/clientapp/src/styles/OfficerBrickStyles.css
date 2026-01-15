@@ -1,0 +1,17 @@
+.officer-grid {
+  display: grid;
+  /* Exactly 3 columns */
+  grid-template-columns: repeat(3, 1fr); 
+  /* This adds both vertical and horizontal spacing */
+  gap: 40px; 
+  /* Adds space inside the beige background */
+  padding: 40px; 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.officer-brick {
+  border: 1px solid #ccc;
+  padding: 15px;
+  text-align: center;
+}

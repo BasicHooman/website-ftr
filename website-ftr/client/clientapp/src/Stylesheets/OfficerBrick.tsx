@@ -13,6 +13,7 @@ interface OfficerBrickProps {
   officerFacebook?: string;
 }
 
+
 const OfficerBrick : React.FC<OfficerBrickProps> = ({ pictureLink, officerName, officerTitle, officerEmail, officerYoutube, officerLinkedIn, officerInstagram, officerTwitter, officerFacebook }: OfficerBrickProps) => {
   const nameRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLParagraphElement>(null);
@@ -51,7 +52,8 @@ const OfficerBrick : React.FC<OfficerBrickProps> = ({ pictureLink, officerName, 
   }, [officerName, officerTitle]);
 
   return (
-    <div className={`bg-[#f5f1e9] p-8 w-1/6 h-[32rem] rounded-md shadow-md justify-center outline outline-4 outline-round-md outline-offset-2 outline-[#d6c7a0]`} style={{ transform: 'scale(0.9)', fontFamily: "Times New Roman" }}>
+    /*
+    <div className={`bg-[#f5f1e9] p-8 h-[32rem] rounded-md shadow-md justify-center outline outline-4 outline-round-md outline-offset-2 outline-[#d6c7a0]`} style={{ transform: 'scale(0.9)', fontFamily: "Times New Roman" }}>
       <div className="text-center mb-4">
         <p ref={nameRef} className="font-bold bg-[#d6c7a0] p-2 rounded-md" style={{ fontSize: nameFontSize }}>{officerName}</p>
       </div>
@@ -75,6 +77,45 @@ const OfficerBrick : React.FC<OfficerBrickProps> = ({ pictureLink, officerName, 
         </div>
       )}
     </div>
+    */
+  /* f5f1e9 Removed w-1/6, removed scale, changed p-8 to p-4, and changed h to min-h */
+  <div className="bg-[#b30920] p-4 w-full min-h-[35rem] rounded-md shadow-md flex flex-col outline outline-4 outline-round-md outline-offset-2 outline-[#0000000]" style={{ fontFamily: "Times New Roman" }}>
+    
+    <div className="text-center mb-2">
+      <p ref={nameRef} className="font-bold bg-[#f5f1e9] p-2 rounded-md whitespace-nowrap overflow-hidden" style={{ fontSize: nameFontSize }}>
+        {officerName}
+      </p>
+    </div>
+
+    <div className="text-center mb-2">
+      <p ref={titleRef} className="bg-[#f5f1e9] p-2 rounded-md flex items-center justify-center min-h-[3rem]" style={{ fontSize: titleFontSize }}>
+        {officerTitle}
+      </p>
+    </div>
+
+    {/* Improved Image Container */}
+    <div className="bg-[#f5f1e9] rounded-md mb-3 flex justify-center items-center overflow-hidden">
+      <img 
+        src={pictureLink ? pictureLink : defaultImage} 
+        alt="officerImage" 
+        className="w-full h-full object-cover p-2" 
+      />
+    </div>
+
+    {(officerEmail || officerYoutube || officerLinkedIn || officerInstagram || officerTwitter || officerFacebook) && (
+      <div className="socials-box text-center bg-[#f5f1e9] p-2 rounded-md mt-auto">
+        <p className="font-bold border-b border-[#b30920] mb-2" style={{ fontSize: '0.9rem' }}>Contacts</p>
+        <div className="flex flex-wrap justify-center gap-1">
+          {officerEmail && <p className="w-full truncate" style={{ fontSize: '0.7rem' }}>{officerEmail}</p>}
+          {officerYoutube && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerYoutube} target="_blank" rel="noopener noreferrer">YouTube</a></p>}
+            {officerLinkedIn && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerLinkedIn} target="_blank" rel="noopener noreferrer">LinkedIn</a></p>}
+            {officerInstagram && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerInstagram} target="_blank" rel="noopener noreferrer">Instagram</a></p>}
+            {officerTwitter && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerTwitter} target="_blank" rel="noopener noreferrer">X (Twitter)</a></p>}
+            {officerFacebook && <p className="w-1/2" style={{ fontSize: '0.5rem' }}><a href={officerFacebook} target="_blank" rel="noopener noreferrer">Facebook</a></p>}
+        </div>
+      </div>
+    )}
+  </div>
   );
 };
 
