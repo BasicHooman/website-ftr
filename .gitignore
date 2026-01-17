@@ -8,3 +8,4 @@ website-ftr/Server/.env
 # Ignore all .env files
 .env*
 /website-ftr/client/clientapp/.env
+website-ftr/client/clientapp/.env
