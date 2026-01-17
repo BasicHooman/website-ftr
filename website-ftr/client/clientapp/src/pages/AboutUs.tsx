@@ -10,7 +10,7 @@ const AboutUs: React.FC = () =>{
 
           <div>
             <p>Created in 2025, For The Record is an organization of student writers in secondary and post-secondary schools. As a global force, we have writers and editors from many different countries. We use the internet to unite the universally repressed youth voice.</p>
-            <p>The young will inherit the world, yet we are given little say of how lawmakers and businessmen treat it. We are using For The Record to speak out again injustice and find empowerment.</p>
+            <p>The young will inherit the world, yet we are given little say of how lawmakers and businessmen treat it. We are using For The Record to speak out again injustice and find empowerment. </p>
             <p>Everything you see on this here is 100% student made, including even the artchitecture of this website! If you are interested in learning more, joining our team, or supporting our journey, feel free to get in contact with any of our officers, or use the contact information below.</p>
           </div>
         </div>
