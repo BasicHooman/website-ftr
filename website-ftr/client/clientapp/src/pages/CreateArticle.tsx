@@ -91,13 +91,6 @@ const CreateArticle = () => {
   const isAdmin = currentUser?.admin === true;
   const articlesSubmitted = currentUser?.articlesSubmitted || 0;
 
-  {/* top ten things we should NOT put in the console LMAO
-  console.log("isAuthor:", isAuthor);
-  console.log("isEditor:", isEditor);
-  console.log("isAdmin:", isAdmin);
-  console.log("articlesSubmitted:", articlesSubmitted);
-  */}
-
   //const userState = 
   const uploadImageToSupabase = async (file: File): Promise<string> => {
     const ext = file.name.split(".").pop();
@@ -314,6 +307,7 @@ const CreateArticle = () => {
               <option value="resources">Resources and Education</option>
               <option value="action">Action and Advocacy</option>
               <option value="global">Global Voices</option>
+              <option value="creative">Creative Corner</option>
             </select>
           </div>
 
