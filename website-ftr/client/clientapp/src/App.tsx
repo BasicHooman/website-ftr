@@ -7,6 +7,9 @@ import Layout from './Components/Layout';
 import CategoryDisplay from './Components/CategoryDisplay';
 import OfficerPage from './pages/OfficerPage';
 import CreateArticle  from './pages/CreateArticle.tsx';
+import EditorDashboard from './pages/EditorDashbord.tsx';
+
+import RequireRole from "./Components/RequireRole.tsx"
 
 function App() {
   return (
@@ -19,6 +22,17 @@ function App() {
         <Route path="officers" element={<OfficerPage />} />
         <Route path="category/:categoryName" element={<CategoryDisplay />} />
         <Route path="create-article" element={<CreateArticle />} />
+        
+        {/*gaslight gatekeep girlboss */}
+        
+        <Route 
+          path="editor-dashboard" 
+          element={
+            <RequireRole allowedRoles={['editor', 'admin']}>
+              <EditorDashboard />
+            </RequireRole>
+            }
+          />
       </Route>
     </Routes>
   );

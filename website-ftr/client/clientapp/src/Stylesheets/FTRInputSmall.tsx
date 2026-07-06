@@ -13,7 +13,8 @@ const FTRInputSmall = ({placeholder, inputValue, onChange}: FTRInputSmallProps) 
                 placeholder={placeholder}
                 value={inputValue}
                 onChange={onChange}
-                className = ""
+                className="thumbnail"
+                style={{ height: "40px", padding: "8px 12px", outline: "none", cursor: "text" }}
             />
         </div>
     );

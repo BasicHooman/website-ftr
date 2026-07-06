@@ -21,42 +21,44 @@ interface GoogleAuthButtonProps {
   onLogout: () => void;
 }
 
-const GoogleAuthButton = ({
-  user,
-  onLogin,
-  onLogout,
-}: GoogleAuthButtonProps) => {
+const GoogleAuthButton = ({user, onLogin, onLogout }: GoogleAuthButtonProps) => {
   
   const navigate = useNavigate();
-
-  if (user) {
-    const roles = user.app_metadata?.roles;
-     
+  //really just covering all my bases here because im going to want to make sure the user exist
+  if(user){
     const firstName = user.user_metadata?.full_name?.split(" ")[0] ?? "User";
-
-    const isAdmin = roles?.admin;
-    const isEditor = roles?.editor;
-    //const isAuthor = roles?.author;
-
-    return (
-      <div style={{ display: "flex", alignItems: "center", gap: "12px", fontFamily: "Times New Roman"}} className="mx-2">
-        <span>Welcome, {firstName}!</span>
-        {isAdmin && (
-          <>
-            <FTRButton
-              onClick={() => navigate("/create-article")}
-              buttonText="Add Article"
-              className="mx-2"
-            />
-          </>
-        )}
-        {((isEditor) && !isAdmin) && (
-          <FTRButton
+    if(user?.app_metadata?.roles?.editor){
+      return (
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", fontFamily: "Times New Roman"}} className="mx-2">
+          <span>Welcome, {firstName}!</span>
+          <FTRButton 
             onClick={() => navigate("/create-article")}
             buttonText="Add Article"
             className="mx-2"
           />
-        )}
+
+          <FTRButton 
+            onClick={() => navigate("/editor-dashboard")}
+            buttonText="Editor Dashboard"
+            className="mx-2"
+          />
+
+          <FTRButton
+            onClick={onLogout}
+            buttonText="Logout"
+            className="mx-2"
+          />
+        </div>
+      ); 
+    }
+    return (
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", fontFamily: "Times New Roman"}} className="mx-2">
+        <span>Welcome, {firstName}!</span>
+        <FTRButton 
+          onClick={() => navigate("/create-article")}
+          buttonText="Add Article"
+          className="mx-2"
+        />
 
         <FTRButton
           onClick={onLogout}
