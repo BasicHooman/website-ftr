@@ -1,6 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Article from './pages/Article';
+import ProposedArticle from './pages/ProposedArticle';
 import AboutUs from './pages/AboutUs';
 import HomePage from './pages/HomePage';
 import Layout from './Components/Layout';
@@ -17,6 +18,14 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="articles/:id" element={<Article/>} />
+        <Route 
+          path="proposed-articles/:id" 
+          element={
+            <RequireRole allowedRoles={['editor', 'admin']}>
+              <ProposedArticle />
+            </RequireRole>
+          } 
+        />
         <Route path="login" element={<Article/>} />
         <Route path="about-us" element={<AboutUs />} />
         <Route path="officers" element={<OfficerPage />} />

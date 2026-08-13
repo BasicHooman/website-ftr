@@ -56,7 +56,7 @@ const CreateArticle = () => {
       if (user) {
         const { data: profile, error } = await supabase
           .from("profiles")
-          .select("id, full_name, admin, editor, author, articlesSubmitted")
+          .select("*")
           .eq("id", user.id)
           .maybeSingle();
 
@@ -64,18 +64,30 @@ const CreateArticle = () => {
           console.error("Error fetching profile:", error);
           setCurrentUser(null);
         } else if (profile) {
+          const metadataRoles = (user.app_metadata?.roles || {}) as Record<string, boolean>;
+          const isAdmin = profile.admin === true || profile.role === "admin" || metadataRoles.admin === true;
+          const isEditor = profile.editor === true || profile.role === "editor" || metadataRoles.editor === true;
+          const isAuthor = profile.author === true || profile.role === "author" || metadataRoles.author === true;
+
           setCurrentUser({
-            ...user, // Spread existing user properties
+            ...user,
             id: profile.id,
             full_name: profile.full_name,
-            admin: profile.admin,
-            editor: profile.editor,
-            author: profile.author,
+            admin: isAdmin,
+            editor: isEditor,
+            author: isAuthor,
             articlesSubmitted: profile.articlesSubmitted
           });
         } else {
-          // User exists but no profile found, treat as unprivileged
-          setCurrentUser({ ...user, id: user.id }); // Still set ID from user object
+          // User exists but no profile found, try metadata roles
+          const metadataRoles = (user.app_metadata?.roles || {}) as Record<string, boolean>;
+          setCurrentUser({
+            ...user,
+            id: user.id,
+            admin: metadataRoles.admin === true,
+            editor: metadataRoles.editor === true,
+            author: metadataRoles.author === true,
+          });
         }
       } else {
         setCurrentUser(null);
@@ -212,7 +224,7 @@ const CreateArticle = () => {
       return;
     }
 
-    const { error } = await supabase.from("articles").insert({
+    const { error } = await supabase.from("proposed_articles").insert({
       title,
       author_id: profile.id,
       author_override: profile.full_name,
@@ -240,6 +252,7 @@ const CreateArticle = () => {
       <div className="mx-auto flex flex-col gap-6 items-center w-full max-w-[50rem] px-4">
         {/* ten million dollar idea: this sohould all be handled in a function that gets called and i make a react object that displays
         a persons credentials */}
+
         {isLoadingUser ? (
           <p className="text-center text-gray-600 mb-1">Loading user information...</p>
           ) : 
@@ -252,6 +265,7 @@ const CreateArticle = () => {
             </div>
           )
         )}
+        
 
         <div className="container-cont">
           

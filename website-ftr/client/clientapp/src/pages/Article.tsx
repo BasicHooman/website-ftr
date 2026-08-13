@@ -104,7 +104,7 @@ const Article: React.FC = () => {
             <p style= {{paddingBottom: "1.5rem"}}></p>
             <p  style={{
                     alignSelf: "flex-start",
-                    paddingLeft: "13.5rem",
+                    paddingLeft: "30rem",
                       marginTop: "0.75rem",
                       marginBottom: "1.25rem",
                       fontStyle: "italic",

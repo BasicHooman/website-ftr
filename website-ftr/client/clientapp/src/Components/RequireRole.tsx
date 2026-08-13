@@ -12,6 +12,8 @@ const RequireRole: React.FC<RequireRoleProps> = ({ children, allowedRoles }) => 
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
 
+  const rolesKey = allowedRoles.join(",");
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -29,16 +31,15 @@ const RequireRole: React.FC<RequireRoleProps> = ({ children, allowedRoles }) => 
           .eq("id", session.user.id)
           .maybeSingle();
 
-        if (!profile) {
-          setAuthorized(false);
-          setLoading(false);
-          return;
-        }
+        const metadataRoles = (session.user.app_metadata?.roles || {}) as Record<string, boolean>;
 
         // is the user wasting my fucking time?
         const hasRole = allowedRoles.some((role) => {
-          const hasBooleanFlag = profile[role] === true;
-          return hasBooleanFlag;
+          const profileFlag = profile ? (profile)[role] === true : false;
+          const profileRoleString = profile ? (profile).role === role : false;
+          const metadataFlag = metadataRoles[role] === true;
+
+          return profileFlag || profileRoleString || metadataFlag;
         });
 
         setAuthorized(hasRole);
@@ -54,7 +55,7 @@ const RequireRole: React.FC<RequireRoleProps> = ({ children, allowedRoles }) => 
     };
 
     checkAuth();
-  }, [allowedRoles]);
+  }, [allowedRoles, rolesKey]);
 
   if (loading) {
     return (

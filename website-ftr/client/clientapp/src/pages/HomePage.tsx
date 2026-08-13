@@ -90,7 +90,6 @@ const HomePage: React.FC = () => {
     <title>For The Record</title>
 
     <div className="d-flex justify-content-center">
-      {/* TRENDING */}
       <div>
         <div className="article-grid-container">
           {articles.map((article) => (

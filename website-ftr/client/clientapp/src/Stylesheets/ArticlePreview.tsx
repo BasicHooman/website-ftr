@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 interface ArticlePreviewProps {
   article: ArticleLimited;
+  basePath?: string;
 }
 
-const ArticlePreview = ({ article }: ArticlePreviewProps) => {
+const ArticlePreview = ({ article, basePath = "/articles" }: ArticlePreviewProps) => {
   const nav = useNavigate();
 
   return (
-    <div className="article-card" onClick={() => nav(`/articles/${article.id}`)}>
+    <div className="article-card" 
+          onClick={() => nav(`${basePath}/${article.id}`)}>
       <div className="d-flex justify-content-between align-items-start">
         
         {/* Text Section */}

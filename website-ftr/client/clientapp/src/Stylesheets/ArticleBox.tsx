@@ -1,7 +1,4 @@
-import React from "react";
-//havent quite implemented the navigation, will get to that
-//import useParams from "react-router-dom";
-//import useNavigate from 'react-router-dom';  
+import React from "react"; 
 import ftrLogo from '../assets/ftr_logo_black.png';
 
 interface ArticleBoxProps {
@@ -14,7 +11,7 @@ interface ArticleBoxProps {
 
 const ArticleBox : React.FC<ArticleBoxProps> = ({articleName, authorName, articleText, articleDate, subtitle}) => {
   return (
-    // 1. UPDATED: Added 'flex flex-col items-center' to center all content horizontally.
+    //Added 'flex flex-col items-center' to center all content horizontally.
     <div className={`bg-[#f5f1e9] outline-[#d6c7a0] outline outline-4 outline-round-md outline-offset-2 h-1/3 w-1/4 rounded-md shadow-md flex flex-col items-center`}>
       
       {/* Text content will be centered due to 'items-center' on the parent */}
